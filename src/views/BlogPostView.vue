@@ -191,9 +191,9 @@ const formatDate = (dateString) => {
 
 const getTagClass = (tag) => {
   const tagClasses = {
-    'administration': 'bg-ondes-green-100 text-ondes-green-700',
-    'gestion': 'bg-ondes-green-100 text-ondes-green-700',
-    'conseils': 'bg-ondes-red-100 text-ondes-red-700',
+    'administration': 'bg-pink-100 text-pink-700',
+    'gestion': 'bg-green-100 text-green-700',
+    'conseils': 'bg-red-100 text-red-700',
     'entrepreneuriat': 'bg-purple-100 text-purple-700',
     'bienvenue': 'bg-blue-100 text-blue-700'
   }
@@ -202,9 +202,9 @@ const getTagClass = (tag) => {
 
 const getTagDotClass = (tag) => {
   const dotClasses = {
-    'administration': 'bg-ondes-green-500',
-    'gestion': 'bg-ondes-green-500',
-    'conseils': 'bg-ondes-red-500',
+    'administration': 'bg-pink-500',
+    'gestion': 'bg-green-500',
+    'conseils': 'bg-red-500',
     'entrepreneuriat': 'bg-purple-500',
     'bienvenue': 'bg-blue-500'
   }

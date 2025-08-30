@@ -25,13 +25,13 @@
 
         <div class="flex flex-wrap justify-center gap-3">
           <span
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ondes-green-100 text-ondes-green-700 text-sm font-medium">
-            <span class="w-2 h-2 bg-ondes-green-500 rounded-full"></span>
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
             Administration
           </span>
           <span
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ondes-red-100 text-ondes-red-700 text-sm font-medium">
-            <span class="w-2 h-2 bg-ondes-red-500 rounded-full"></span>
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-medium">
+            <span class="w-2 h-2 bg-red-500 rounded-full"></span>
             Conseils
           </span>
           <span
