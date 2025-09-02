@@ -108,7 +108,7 @@
         </article>
       </div>
       <!-- Load More Button (si nécessaire) -->
-      <div class="text-center mt-16">
+      <div v-if="publishedPosts.length>2" class="text-center mt-16">
         <button
           class="group bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
           <span class="flex items-center justify-center gap-2">
@@ -123,7 +123,7 @@
       </div>
 
       <!-- Empty State -->
-      <div v-if="publishedPosts.length === 0" class="text-center py-20">
+      <div v-if="publishedPosts.length === 0" class="text-center">
         <div
           class="w-24 h-24 bg-gradient-to-r from-ondes-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <svg class="w-12 h-12 text-ondes-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,6 +190,18 @@ import { useBlogStore } from '@/stores/blog'
 const blogStore = useBlogStore()
 const publishedPosts = computed(() => blogStore.getPublishedPosts())
 
+// Charger les posts au montage
+onMounted(async () => {
+  await blogStore.loadPublishedPosts()
+  
+  // Setup intersection observer après le chargement
+  setupIntersectionObserver()
+  const animatedElements = document.querySelectorAll(
+    '.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right, .animate-on-scroll'
+  )
+  animatedElements.forEach((el) => observer.observe(el))
+})
+
 // Utility functions
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -237,14 +249,6 @@ const setupIntersectionObserver = () => {
     { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
   )
 }
-
-onMounted(() => {
-  setupIntersectionObserver()
-  const animatedElements = document.querySelectorAll(
-    '.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right, .animate-on-scroll'
-  )
-  animatedElements.forEach((el) => observer.observe(el))
-})
 
 onUnmounted(() => {
   if (observer) observer.disconnect()

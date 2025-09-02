@@ -1,105 +1,240 @@
 import { defineStore } from 'pinia'
-import { ref, readonly } from 'vue'
+import { ref } from 'vue'
+import { supabase } from '@/lib/supabase'
 
 export const useBlogStore = defineStore('blog', () => {
-  const posts = ref([
-    {
-      id: '1',
-      title: "Bienvenue sur le blog d'Ondes Actives",
-      description: "Découvrez notre nouveau blog dédié à l'entrepreneuriat et à l'administration d'entreprise.",
-      content: `# Bienvenue sur notre blog !
+  const posts = ref([])
+  const loading = ref(false)
+  const error = ref(null)
 
-Nous sommes ravis de vous accueillir sur le blog d'**Ondes Actives**, votre partenaire de confiance pour l'administration et l'assistance aux entrepreneurs.
+  // Charger tous les posts publiés (pour le public)
+  const loadPublishedPosts = async () => {
+    try {
+      loading.value = true
+      error.value = null
 
-## Pourquoi ce blog ?
+      const { data, error: supabaseError } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('draft', false)
+        .order('publish_date', { ascending: false })
 
-Dans un monde entrepreneurial en constante évolution, nous avons créé ce blog pour vous accompagner au quotidien avec :
+      if (supabaseError) throw supabaseError
 
-- **Des conseils pratiques** pour optimiser votre gestion d'entreprise
-- **Des actualités** sur les réglementations et obligations administratives
-- **Des retours d'expérience** de nos clients et partenaires
-- **Des guides détaillés** pour vous simplifier la vie d'entrepreneur
+      posts.value = data.map(post => ({
+        ...post,
+        publishDate: post.publish_date,
+        heroImage: post.hero_image
+      }))
 
-## Nos thématiques principales
-
-### 🏢 Administration d'entreprise
-Comptabilité, déclarations, formalités... Nous vous guidons dans toutes vos démarches administratives.
-
-### 🚨 Gestion des urgences
-Comment réagir face aux situations critiques ? Nos experts partagent leurs conseils.
-
-### 💡 Conseils entrepreneuriaux
-Stratégies de développement, optimisation des processus, formation... Tout pour faire grandir votre entreprise.
-
-## Restez connectés
-
-N'hésitez pas à [nous contacter](/contact) pour nous suggérer des sujets qui vous intéressent ou pour partager vos expériences.
-
-Suivez régulièrement ce blog pour ne rien manquer de nos actualités et conseils !
-
----
-
-*L'équipe Ondes Actives*`,
-      author: 'Ondes Actives',
-      publishDate: '2024-01-15T10:00:00Z',
-      heroImage: 'https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      tags: ['bienvenue', 'entrepreneuriat', 'administration'],
-      slug: 'bienvenue',
-      draft: false
-    },
-    {
-      id: '2',
-      title: "5 conseils pour optimiser votre gestion administrative",
-      description: "Découvrez nos conseils d'experts pour simplifier et optimiser la gestion administrative de votre entreprise.",
-      content: `# 5 conseils pour optimiser votre gestion administrative
-
-La gestion administrative peut rapidement devenir un casse-tête pour les entrepreneurs. Voici nos 5 conseils essentiels pour l'optimiser.
-
-## 1. Digitalisez vos documents
-
-Fini les piles de papiers ! Numérisez tous vos documents importants et organisez-les dans un système de classement numérique clair.
-
-## 2. Automatisez vos processus répétitifs
-
-Utilisez des outils pour automatiser vos facturations, relances et déclarations récurrentes.
-
-## 3. Planifiez vos échéances
-
-Créez un calendrier des obligations fiscales et sociales pour ne jamais être pris au dépourvu.
-
-## 4. Externalisez ce qui peut l'être
-
-Concentrez-vous sur votre cœur de métier en confiant certaines tâches administratives à des experts.
-
-## 5. Formez-vous régulièrement
-
-Restez à jour sur les évolutions réglementaires qui impactent votre activité.
-
----
-
-*Besoin d'aide ? Contactez notre équipe d'experts !*`,
-      author: 'Laurie Le Séhan',
-      publishDate: '2024-01-20T14:30:00Z',
-      heroImage: 'https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      tags: ['gestion', 'administration', 'conseils'],
-      slug: 'conseils-gestion-administrative',
-      draft: false
+    } catch (err) {
+      error.value = err.message
+      console.error('Error loading published posts:', err)
+    } finally {
+      loading.value = false
     }
-  ])
+  }
 
+  // Charger tous les posts (pour l'admin)
+  const loadAllPosts = async () => {
+    try {
+      loading.value = true
+      error.value = null
+
+      const { data, error: supabaseError } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (supabaseError) throw supabaseError
+
+      posts.value = data.map(post => ({
+        ...post,
+        publishDate: post.publish_date,
+        heroImage: post.hero_image
+      }))
+
+    } catch (err) {
+      error.value = err.message
+      console.error('Error loading all posts:', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Créer un nouveau post
+  const createPost = async (postData) => {
+    try {
+      loading.value = true
+      error.value = null
+
+      const { data, error: supabaseError } = await supabase
+        .from('blog_posts')
+        .insert([{
+          title: postData.title,
+          description: postData.description,
+          content: postData.content,
+          author: postData.author,
+          slug: postData.slug,
+          hero_image: postData.heroImage,
+          tags: postData.tags,
+          draft: postData.draft,
+          publish_date: postData.publishDate
+        }])
+        .select()
+        .single()
+
+      if (supabaseError) throw supabaseError
+
+      // Ajouter le nouveau post au store
+      const newPost = {
+        ...data,
+        publishDate: data.publish_date,
+        heroImage: data.hero_image
+      }
+      posts.value.unshift(newPost)
+
+      return { success: true, data: newPost }
+    } catch (err) {
+      error.value = err.message
+      console.error('Error creating post:', err)
+      return { success: false, error: err.message }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Mettre à jour un post
+  const updatePost = async (id, postData) => {
+    try {
+      loading.value = true
+      error.value = null
+
+      const { data, error: supabaseError } = await supabase
+        .from('blog_posts')
+        .update({
+          title: postData.title,
+          description: postData.description,
+          content: postData.content,
+          author: postData.author,
+          slug: postData.slug,
+          hero_image: postData.heroImage,
+          tags: postData.tags,
+          draft: postData.draft,
+          publish_date: postData.publishDate
+        })
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (supabaseError) throw supabaseError
+
+      // Mettre à jour le post dans le store
+      const updatedPost = {
+        ...data,
+        publishDate: data.publish_date,
+        heroImage: data.hero_image
+      }
+      
+      const index = posts.value.findIndex(post => post.id === id)
+      if (index !== -1) {
+        posts.value[index] = updatedPost
+      }
+
+      return { success: true, data: updatedPost }
+    } catch (err) {
+      error.value = err.message
+      console.error('Error updating post:', err)
+      return { success: false, error: err.message }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Supprimer un post
+  const deletePost = async (id) => {
+    try {
+      loading.value = true
+      error.value = null
+
+      const { error: supabaseError } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id)
+
+      if (supabaseError) throw supabaseError
+
+      // Retirer le post du store
+      posts.value = posts.value.filter(post => post.id !== id)
+
+      return { success: true }
+    } catch (err) {
+      error.value = err.message
+      console.error('Error deleting post:', err)
+      return { success: false, error: err.message }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Obtenir un post par slug
   const getPostBySlug = (slug) => {
     return posts.value.find(post => post.slug === slug && !post.draft)
   }
 
+  // Obtenir tous les posts publiés
   const getPublishedPosts = () => {
-    return posts.value.filter(post => !post.draft).sort((a, b) => 
-      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-    )
+    return posts.value.filter(post => !post.draft)
+      .sort((a, b) => new Date(b.publishDate || b.publish_date).getTime() - new Date(a.publishDate || a.publish_date).getTime())
+  }
+
+  // Générer un slug à partir du titre
+  const generateSlug = (title) => {
+    return title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Retirer les accents
+      .replace(/[^a-z0-9\s-]/g, '') // Retirer les caractères spéciaux
+      .trim()
+      .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+      .replace(/-+/g, '-') // Éviter les tirets multiples
+  }
+
+  // Vérifier si un slug existe déjà
+  const checkSlugExists = async (slug, excludeId = null) => {
+    try {
+      let query = supabase
+        .from('blog_posts')
+        .select('id')
+        .eq('slug', slug)
+
+      if (excludeId) {
+        query = query.neq('id', excludeId)
+      }
+
+      const { data, error: supabaseError } = await query
+
+      if (supabaseError) throw supabaseError
+
+      return data && data.length > 0
+    } catch (err) {
+      console.error('Error checking slug:', err)
+      return false
+    }
   }
 
   return {
-    posts: readonly(posts),
+    posts,
+    loading,
+    error,
+    loadPublishedPosts,
+    loadAllPosts,
+    createPost,
+    updatePost,
+    deletePost,
     getPostBySlug,
-    getPublishedPosts
+    getPublishedPosts,
+    generateSlug,
+    checkSlugExists
   }
 })

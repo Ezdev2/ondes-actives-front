@@ -120,7 +120,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useBlogStore } from '@/stores/blog'
 
@@ -131,6 +131,26 @@ const blogStore = useBlogStore()
 const post = computed(() => {
   const slug = route.params.slug
   return blogStore.getPostBySlug(slug)
+})
+
+// Charger les posts si pas encore fait
+onMounted(async () => {
+  if (blogStore.posts.length === 0) {
+    await blogStore.loadPublishedPosts()
+  }
+  
+  setupIntersectionObserver()
+  const animatedElements = document.querySelectorAll(
+    '.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right'
+  )
+  animatedElements.forEach((el) => observer.observe(el))
+})
+
+// Recharger si le slug change
+watch(() => route.params.slug, async (newSlug) => {
+  if (newSlug && !post.value) {
+    await blogStore.loadPublishedPosts()
+  }
 })
 
 // IntersectionObserver animations
@@ -149,14 +169,6 @@ const setupIntersectionObserver = () => {
     { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
   )
 }
-
-onMounted(() => {
-  setupIntersectionObserver()
-  const animatedElements = document.querySelectorAll(
-    '.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right'
-  )
-  animatedElements.forEach((el) => observer.observe(el))
-})
 
 onUnmounted(() => {
   if (observer) observer.disconnect()
