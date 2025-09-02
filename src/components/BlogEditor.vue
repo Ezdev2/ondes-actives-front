@@ -373,11 +373,17 @@ const editorTools = [
 const isEditing = computed(() => !!props.post)
 
 const canSave = computed(() => {
-  return form.value.title.trim() &&
-    form.value.slug.trim() &&
-    form.value.author.trim() &&
-    !slugError.value
-})
+  const result = form.value.title.trim() &&
+    !slugError.value;
+  
+  console.log('canSave check:', {
+    title: !!form.value.title.trim(),
+    noSlugError: !slugError.value,
+    result
+  });
+  
+  return result;
+});
 
 // Contenu rendu pour l'aperçu
 const renderedContent = computed(() => {
@@ -400,6 +406,8 @@ const renderedContent = computed(() => {
 
 // Charger les données du post si en mode édition
 onMounted(() => {
+  console.log('BlogEditor mounted, props.post:', props.post);
+  
   if (props.post) {
     form.value = {
       title: props.post.title || '',
@@ -414,15 +422,27 @@ onMounted(() => {
         : '',
       draft: props.post.draft ?? true
     }
+    console.log('Form initialized with existing post:', form.value);
   } else {
     // Valeurs par défaut pour un nouveau post
     form.value.publishDate = new Date().toISOString().slice(0, 16)
+    form.value.author = 'Ondes Actives' // Assurez-vous que l'auteur est défini
+    console.log('Form initialized for new post:', form.value);
   }
 })
 
 const updateSlug = () => {
   if (!isEditing.value || !form.value.slug) {
-    form.value.slug = blogStore.generateSlug(form.value.title)
+    if (form.value.title) {
+      form.value.slug = form.value.title
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+    }
   }
 }
 
@@ -560,31 +580,36 @@ const handleKeydown = (event) => {
 }
 
 const handleSubmit = async () => {
-  console.log(form.value);
+  console.log('handleSubmit called, form.value:', form.value);
+  console.log('canSave:', canSave.value);
 
-  if (!canSave.value) return
+  if (!canSave.value) {
+    console.log('Cannot save - validation failed');
+    return;
+  }
 
   loading.value = true
 
-  const postData = {
-    title: form.value.title.trim(),
-    slug: form.value.slug.trim(),
-    description: form.value.description.trim(),
-    content: form.value.content.trim(),
-    heroImage: form.value.heroImage.trim(),
-    tags: form.value.tags,
-    author: form.value.author.trim(),
-    publishDate: form.value.publishDate ? new Date(form.value.publishDate).toISOString() : new Date().toISOString(),
-    draft: form.value.draft
+  try {
+    const postData = {
+      title: form.value.title.trim(),
+      slug: form.value.slug.trim(),
+      description: form.value.description.trim(),
+      content: form.value.content.trim(),
+      heroImage: form.value.heroImage.trim(),
+      tags: form.value.tags,
+      author: form.value.author.trim(),
+      publishDate: form.value.publishDate ? new Date(form.value.publishDate).toISOString() : new Date().toISOString(),
+      draft: form.value.draft
+    }
+
+    console.log('Emitting save event with:', postData);
+    emit('save', postData)
+    
+  } catch (error) {
+    console.error('Error in handleSubmit:', error);
+    loading.value = false;
   }
-
-  emit('save', postData)
-  loading.value = false
-}
-
-const saveDraft = () => {
-  form.value.draft = true
-  handleSubmit()
 }
 
 // Utilitaires
