@@ -20,8 +20,8 @@
         <!-- Left Column -->
         <div class="text-center md:text-left space-y-8">
           <p class="text-3xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
-              Solutions opérationnelles pour petites structures
-            </p>
+            Solutions opérationnelles pour petites structures
+          </p>
           <div class="animate-slide-up" :class="{ active: isInView.hero }">
             <h1 class="text-4xl md:text-[54px] font-bold text-gray-800 mb-6 leading-tight">
               Ici on prend en <br> charge vos tâches <br> chronophages.
@@ -374,11 +374,142 @@
         </div>
       </div>
     </section>
+
+    <!-- blog -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.expertise }">
+          <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
+            Prenez connaissance du blog de <span
+              class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Ondes Actives ?</span>
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Gestion, administration, délégation, découvrez les different articles en ligne.
+          </p>
+        </div>
+        <div v-if="loading && !publishedPosts.length" class="flex flex-col md:flex-row gap-8 w-full">
+          <div v-for="i in 3" :key="i"
+            class="animate-pulse w-full bg-white rounded-lg border border-gray-100 overflow-hidden">
+            <div class="h-48 bg-gray-200"></div>
+            <div class="p-8 space-y-4">
+              <div class="flex gap-2">
+                <span class="h-5 w-16 bg-gray-200 rounded-full"></span>
+                <span class="h-5 w-12 bg-gray-200 rounded-full"></span>
+              </div>
+              <div class="h-6 bg-gray-200 rounded w-3/4"></div>
+              <div class="h-4 bg-gray-200 rounded w-full"></div>
+              <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 bg-gray-200 rounded-full"></div>
+                  <span class="h-4 w-16 bg-gray-200 rounded"></span>
+                </div>
+                <span class="h-4 w-12 bg-gray-200 rounded"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="publishedPosts.length" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <article v-for="(post, index) in publishedPosts.slice(0, 3)" :key="post.id"
+            class="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 overflow-hidden hover:transform hover:scale-105 transition-all duration-300 animate-on-scroll hover:shadow-xl"
+            :style="{ animationDelay: `${index * 100}ms` }">
+            <!-- Featured Image -->
+            <div class="relative overflow-hidden">
+              <img :src="post.heroImage" :alt="post.title"
+                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8">
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span v-for="tag in post.tags.slice(0, 2)" :key="tag"
+                  class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium"
+                  :class="getTagClass(tag)">
+                  <span class="w-1.5 h-1.5 rounded-full" :class="getTagDotClass(tag)"></span>
+                  {{ tag }}
+                </span>
+              </div>
+
+              <!-- Title -->
+              <h2
+                class="text-xl font-bold text-gray-800 mb-3 group-hover:text-ondes-green-600 transition-colors line-clamp-2">
+                {{ post.title }}
+              </h2>
+
+              <!-- Description -->
+              <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                {{ post.description }}
+              </p>
+
+              <!-- Meta -->
+              <div class="flex items-center justify-between border-t pt-4 border-gray-100 text-sm text-gray-500 mb-6">
+                <div class="flex items-center gap-2">
+                  <img
+                    src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?auto=compress&cs=tinysrgb&w=50"
+                    alt="Auteur" class="w-6 h-6 rounded-full object-cover" />
+                  <span>{{ post.author }}</span>
+                </div>
+                <time :datetime="post.publishDate">
+                  {{ formatDate(post.publishDate) }}
+                </time>
+              </div>
+
+              <!-- Read More Button -->
+              <router-link :to="`/blog/${post.slug}`"
+                class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium group-hover:gap-3 transition-all duration-300">
+                Lire l'article
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </router-link>
+            </div>
+          </article>
+        </div>
+        <!-- Load More Button (si nécessaire) -->
+        <div class="text-center mt-16">
+          <router-link to="/blog"
+            class="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
+            Découvrir les articles
+          </router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 relative overflow-hidden">
+      <div
+        class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-32 -translate-y-32 animate-spin-slow">
+      </div>
+      <div
+        class="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-48 translate-y-48 animate-spin-slow-reverse">
+      </div>
+
+      <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            Besoin d'un coup de pouce dans la gestion de votre activité ?
+          </h2>
+          <p class="text-xl text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Parlons-en simplement, sans engagement.
+          </p>
+
+          <router-link to="/contact"
+            class="bg-white text-green-600 px-8 py-3 rounded-full hover:bg-gray-50 transition-all duration-300 font-bold transform hover:scale-105">
+            Me contacter
+          </router-link>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
+import { useBlogStore } from '@/stores/blog'
 import {
   ArrowRightIcon,
   PlayIcon,
@@ -413,6 +544,53 @@ const isInView = reactive({
   expertise: false,
   cta: false
 })
+
+const blogStore = useBlogStore()
+const loading = ref(true)
+const publishedPosts = computed(() => blogStore.getPublishedPosts())
+
+// Charger les posts au montage
+onMounted(async () => {
+  await blogStore.loadPublishedPosts()
+  loading.value = false
+  setupIntersectionObserver()
+  const animatedElements = document.querySelectorAll(
+    '.animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right, .animate-on-scroll'
+  )
+  animatedElements.forEach((el) => observer.observe(el))
+})
+
+// Utility functions
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const getTagClass = (tag) => {
+  const tagClasses = {
+    'administration': 'bg-red-100 text-red-700',
+    'gestion': 'bg-green-100 text-green-700',
+    'conseils': 'bg-red-100 text-red-700',
+    'entrepreneuriat': 'bg-purple-100 text-purple-700',
+    'bienvenue': 'bg-blue-100 text-blue-700'
+  }
+  return tagClasses[tag] || 'bg-gray-100 text-gray-700'
+}
+
+const getTagDotClass = (tag) => {
+  const dotClasses = {
+    'administration': 'bg-red-500',
+    'gestion': 'bg-green-500',
+    'conseils': 'bg-pink-500',
+    'entrepreneuriat': 'bg-purple-500',
+    'bienvenue': 'bg-blue-500'
+  }
+  return dotClasses[tag] || 'bg-gray-500'
+}
 
 const services = ref([
   {
@@ -479,30 +657,6 @@ const services = ref([
     icon: "trending-up",
     image: image4,
     color: "pink"
-  }
-])
-
-const testimonials = ref([
-  {
-    name: "Jean Dupont",
-    role: "CEO, Entreprise X",
-    image: "JD",
-    text: "C'est ma première fois que j'utilise un service de marketing avec Ondes Actives, et je suis vraiment impressionné par leur professionnalisme et les résultats obtenus. Je les recommande vivement !",
-    gradient: "from-blue-400 to-cyan-400"
-  },
-  {
-    name: "Marie Smith",
-    role: "Fondatrice, Startup Y",
-    image: "MS",
-    text: "L'équipe d'Ondes Actives a transformé notre approche administrative. Leur expertise et leur réactivité sont inégalées. Un vrai partenaire de confiance !",
-    gradient: "from-green-400 to-emerald-500"
-  },
-  {
-    name: "Pierre Leclerc",
-    role: "Directeur, Société Z",
-    image: "PL",
-    text: "Grâce aux formations sur mesure d'Ondes Actives, notre équipe a acquis de nouvelles compétences essentielles. Un investissement qui a porté ses fruits !",
-    gradient: "from-purple-400 to-pink-400"
   }
 ])
 

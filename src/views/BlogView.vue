@@ -14,7 +14,7 @@
     </div>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-      <div class="animate-fade-in-up">
+      <div>
         <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
           Notre <span
             class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">Blog</span>
@@ -47,6 +47,28 @@
   <!-- Blog Posts Section -->
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div v-if="loading" class="flex flex-col md:flex-row gap-8 w-full">
+        <div v-for="i in 3" :key="i"
+          class="animate-pulse w-full bg-white rounded-lg border border-gray-100 overflow-hidden">
+          <div class="h-48 bg-gray-200"></div>
+          <div class="p-8 space-y-4">
+            <div class="flex gap-2">
+              <span class="h-5 w-16 bg-gray-200 rounded-full"></span>
+              <span class="h-5 w-12 bg-gray-200 rounded-full"></span>
+            </div>
+            <div class="h-6 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-gray-200 rounded-full"></div>
+                <span class="h-4 w-16 bg-gray-200 rounded"></span>
+              </div>
+              <span class="h-4 w-12 bg-gray-200 rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <article v-for="(post, index) in publishedPosts" :key="post.id"
           class="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 overflow-hidden hover:transform hover:scale-105 transition-all duration-300 animate-on-scroll hover:shadow-xl"
@@ -108,7 +130,7 @@
         </article>
       </div>
       <!-- Load More Button (si nécessaire) -->
-      <div v-if="publishedPosts.length>2" class="text-center mt-16">
+      <div v-if="publishedPosts.length > 4" class="text-center mt-16">
         <button
           class="group bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
           <span class="flex items-center justify-center gap-2">
@@ -123,7 +145,7 @@
       </div>
 
       <!-- Empty State -->
-      <div v-if="publishedPosts.length === 0" class="text-center">
+      <div v-if="publishedPosts.length === 0 && !loading" class="text-center">
         <div
           class="w-24 h-24 bg-gradient-to-r from-ondes-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <svg class="w-12 h-12 text-ondes-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,9 +166,8 @@
     </div>
   </section>
 
-  <!-- Newsletter Section -->
-  <section class="py-20 bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 relative overflow-hidden">
-    <!-- Formes décoratives -->
+  <!-- CTA -->
+  <section class="py-20 bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 relative overflow-hidden">
     <div
       class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-32 -translate-y-32 animate-spin-slow">
     </div>
@@ -155,45 +176,37 @@
     </div>
 
     <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="animate-fade-in-up">
+      <div>
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-          Ne ratez aucun <span class="text-yellow-200">conseil</span>
+          Besoin d'un coup de pouce dans la gestion de votre activité ?
         </h2>
-        <p class="text-xl text-pink-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Inscrivez-vous à notre newsletter pour recevoir nos derniers articles et conseils d'experts directement dans
-          votre boîte mail.
+        <p class="text-xl text-green-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+          Parlons-en simplement, sans engagement.
         </p>
 
-        <div class="bg-white/20 backdrop-blur-sm p-8 rounded-3xl mx-auto">
-          <form class="flex flex-col sm:flex-row gap-4">
-            <input type="email" placeholder="Votre adresse email"
-              class="flex-1 px-6 py-3 rounded-full border border-white/50 focus:ring-2 focus:ring-white/50 focus:outline-none" />
-            <button type="submit"
-              class="bg-white text-pink-600 px-8 py-3 rounded-full hover:bg-gray-50 transition-all duration-300 font-bold transform hover:scale-105">
-              S'inscrire
-            </button>
-          </form>
-          <p class="text-pink-100 text-sm mt-4 opacity-80">
-            Pas de spam, désinscription facile à tout moment.
-          </p>
-        </div>
+        <router-link to="/contact"
+          class="bg-white text-green-600 px-8 py-3 rounded-full hover:bg-gray-50 transition-all duration-300 font-bold transform hover:scale-105">
+          Me contacter
+        </router-link>
       </div>
     </div>
   </section>
+
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useBlogStore } from '@/stores/blog'
 
 // Blog store
 const blogStore = useBlogStore()
+const loading = ref(true)
 const publishedPosts = computed(() => blogStore.getPublishedPosts())
 
 // Charger les posts au montage
 onMounted(async () => {
   await blogStore.loadPublishedPosts()
-  
+  loading.value = false
   // Setup intersection observer après le chargement
   setupIntersectionObserver()
   const animatedElements = document.querySelectorAll(
