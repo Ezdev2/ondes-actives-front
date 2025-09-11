@@ -57,6 +57,11 @@ const router = createRouter({
       component: () => import("@/views/PrivacyView.vue"),
     },
     {
+      path: "/cookies-policy",
+      name: "cookies",
+      component: () => import("@/views/PoliticCookies.vue"),
+    },
+    {
       path: "/:pathMatch(.*)*",
       redirect: "/",
     },

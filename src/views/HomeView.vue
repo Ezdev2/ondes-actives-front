@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-white">
     <!-- Section hero -->
     <section
-      class="relative bg-gradient-to-br from-white/50 via-ondes-light-red-50 to-ondes-green-50 py-20 overflow-hidden min-h-[90vh] flex items-center">
+      class="relative min-h-[80vh] bg-gradient-to-br from-white/50 via-ondes-light-red-50 to-ondes-green-50 py-20 overflow-hidden flex items-center">
       <div
         class="absolute top-10 left-10 w-20 h-20 bg-gradient-to-r from-pink-200 to-rose-200 rounded-full opacity-60 animate-float">
       </div>
@@ -19,50 +19,45 @@
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 items-center gap-4 relative z-10">
         <!-- Left Column -->
         <div class="text-center md:text-left space-y-8">
+          <p class="text-3xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+              Solutions opérationnelles pour petites structures
+            </p>
           <div class="animate-slide-up" :class="{ active: isInView.hero }">
             <h1 class="text-4xl md:text-[54px] font-bold text-gray-800 mb-6 leading-tight">
-              Ici on prend en charge vos tâches chronophages :
-              <span
-                class="bg-gradient-to-r bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent animate-gradient">déléguer
-                pour mieux gérer</span>
+              Ici on prend en <br> charge vos tâches <br> chronophages.
 
             </h1>
           </div>
 
           <div class="animate-slide-up-delay" :class="{ active: isInView.hero }">
-            <p class="text-lg text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
-              De la gestion de mails à la création de contenu, en passant par les plannings, les relances ou la gestion
-              de projet...Ondes Actives vous aide à reprendre le contrôle sur votre quotidien professionnel en prenant
-              en charge les tâches chronophages.
+            <p class="text-3xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+              Ondes actives vous aide à reprendre le contrôle sur votre quotidien professionel
             </p>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-2 justify-center md:justify-start animate-slide-up-delay-2"
-            :class="{ active: isInView.hero }">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row gap-2 justify-center md:justify-start animate-slide-up-delay-2"
+              :class="{ active: isInView.hero }">
 
-            <router-link to="/#services"
-              class="group flex items-center text-sm bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
-              <span class="flex items-center justify-center gap-1">
-                Découvrir les Solutions
-                <ArrowRightIcon class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </router-link>
-            <router-link to="/contact"
-              class="group flex items-center text-sm flex items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full border-2 border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-300 font-medium">
-              <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              Prendre contact
-            </router-link>
+              <router-link to="/#services"
+                class="group flex items-center text-md bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
+                <span class="flex items-center justify-center gap-1">
+                  Découvrir les Solutions
+                  <ArrowRightIcon class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </router-link>
+              <router-link to="/contact"
+                class="group flex items-center text-md flex items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full border-2 border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-300 font-medium">
+                <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                Prendre contact
+              </router-link>
+            </div>
             <router-link to="/about"
-              class="group flex items-center text-sm flex items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full border-2 border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-300 font-medium">
-              <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                  clip-rule="evenodd"></path>
-              </svg>
+              class="w-[fit-content] flex items-center text-xs flex bg-green-500/20 items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full font-light">
               Entreprenariat solidaire et responsable
             </router-link>
           </div>
@@ -71,51 +66,7 @@
         <!-- Right Column -->
         <div class="hidden relative md:flex items-center justify-center animate-fade-in-right"
           :class="{ active: isInView.hero }">
-          <!-- Image principale -->
-          <div class="relative">
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-pink-200 via-rose-200 to-ondes-green-200 rounded-full opacity-20 animate-pulse-slow">
-            </div>
-            <img src="/images/hero.png" alt="Femme entrepreneure souriante"
-              class="relative w-full max-w-md lg:max-w-lg h-auto object-cover rounded-full" />
-          </div>
-
-          <!-- Descriptions flottantes Ondes Actives -->
-          <div
-            class="absolute -bottom-4 -right-4 md:-right-8 bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-pink-100 max-w-xs animate-float-up shadow-pink">
-            <div class="flex items-start gap-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-r bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white">
-                <SparklesIcon class="w-6 h-6" />
-              </div>
-              <div class="flex-1">
-                <p class="text-gray-700 text-sm mb-2">
-                  Épargnez-vous les tâches chronophages, nous vous accompagnons dans <span class="font-semibold">le
-                    développement</span>
-                  de votre entreprise.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="absolute -top-4 -left-4 md:-left-8 bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-green-100 max-w-xs animate-float-down shadow-green">
-            <div class="flex items-start gap-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full flex items-center justify-center text-white">
-                <GlobeAltIcon class="w-6 h-6" />
-              </div>
-              <div class="flex-1">
-                <p class="text-gray-700 text-sm mb-2">
-                  Accompagnement administratif et opérationnel pour entrepreneur.e.s, artisan.e.s, commerçant.e.s, et
-                  associations
-                  de votre entreprise.
-                </p>
-
-              </div>
-            </div>
-          </div>
-
+          <img src="/images/Image-Accueil.png" class="w-full scale-150" alt="">
         </div>
       </div>
     </section>

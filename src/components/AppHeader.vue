@@ -15,7 +15,7 @@
             v-for="item in navigation"
             :key="item.name"
             :to="item.href"
-            class="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+            class="text-gray-700 hover:text-green-600 px-3 py-2 text-md font-medium transition-colors duration-200"
             :class="{ 'text-green-600 font-semibold': item.current }"
           >
             {{ item.name }}
@@ -81,7 +81,6 @@ const { navigation } = storeToRefs(siteStore)
 
 const mobileMenuOpen = ref(false)
 
-// Update navigation state based on current route
 watch(() => route.path, (newPath) => {
   siteStore.updateCurrentNavigation(newPath)
   mobileMenuOpen.value = false
