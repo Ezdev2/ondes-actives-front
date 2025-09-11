@@ -61,9 +61,7 @@ export const useBlogStore = defineStore("blog", () => {
   };
 
   // Créer un nouveau post
-  const createPost = async (postData) => {
-    console.log('🚀 Starting createPost with data:', postData)
-    
+  const createPost = async (postData) => {    
     try {
       loading.value = true;
       error.value = null;
@@ -82,9 +80,6 @@ export const useBlogStore = defineStore("blog", () => {
         })
         .select()
         .single();
-
-      console.log("Supabase response - data:", data, "error:", supabaseError);
-
       if (supabaseError) {
         console.error("Supabase error details:", supabaseError);
         throw supabaseError;

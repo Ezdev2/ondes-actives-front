@@ -242,23 +242,16 @@ const closeEditor = () => {
 }
 
 const handleSavePost = async (postData) => {
-  console.log('handleSavePost called with:', postData)
-  
   try {
     let result
     
     if (editingPost.value) {
       // Mise à jour
-      console.log('Updating post with ID:', editingPost.value.id)
       result = await blogStore.updatePost(editingPost.value.id, postData)
     } else {
       // Création
-      console.log('Creating new post')
       result = await blogStore.createPost(postData)
-    }
-    
-    console.log('Save result:', result)
-    
+    }    
     if (result.success) {
       closeEditor()
       // Recharger la liste

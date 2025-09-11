@@ -17,15 +17,22 @@
           </div>
           <!-- Actions -->
           <div class="flex flex-col sm:flex-row gap-3">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <label class="flex items-center gap-2">
+                <input v-model="form.draft" type="checkbox"
+                  class="rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                <span class="text-sm font-medium text-gray-700">Brouillon</span>
+              </label>
+            </div>
             <button @click="$emit('close')"
               class="flex-1 px-6 py-3 text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               Annuler
             </button>
 
-            <button v-if="!form.draft" @click="saveDraft"
+            <!-- <button v-if="!form.draft" @click="saveDraft"
               class="flex-1 px-6 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
               Sauver brouillon
-            </button>
+            </button> -->
 
             <button @click="handleSubmit" :disabled="loading || !canSave"
               class="flex-1 px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
@@ -50,8 +57,9 @@
     <div class="max-w-7xl mx-auto py-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Formulaire d'édition -->
-        <div :class="!showPreview ? 'col-span-2' : 'col-span-1'" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          
+        <div :class="!showPreview ? 'col-span-2' : 'col-span-1'"
+          class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 mb-6">Informations de l'article</h3>
             <button type="button" @click="showPreview = !showPreview"
@@ -243,15 +251,6 @@
               <input v-model="form.publishDate" type="datetime-local"
                 class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent" />
             </div>
-
-            <!-- Statut -->
-            <div class="bg-gray-50 rounded-lg p-4">
-              <label class="flex items-center gap-2">
-                <input v-model="form.draft" type="checkbox"
-                  class="rounded border-gray-300 text-green-600 focus:ring-green-500" />
-                <span class="text-sm font-medium text-gray-700">Enregistrer comme brouillon</span>
-              </label>
-            </div>
           </form>
         </div>
 
@@ -362,7 +361,7 @@ const availableTags = {
 const editorTools = [
   { name: 'bold', title: 'Gras', icon: BoldIcon, format: '**', wrapper: true },
   { name: 'italic', title: 'Italique', icon: ItalicIcon, format: '*', wrapper: true },
-  { name: 'heading1', title: 'Titre H1', icon:  H1Icon, format: '# ', wrapper: false},
+  { name: 'heading1', title: 'Titre H1', icon: H1Icon, format: '# ', wrapper: false },
   { name: 'heading2', title: 'Titre H2', icon: H2Icon, format: '## ', wrapper: false },
   { name: 'heading3', title: 'Titre H3', icon: H3Icon, format: '### ', wrapper: false },
   { name: 'list', title: 'Liste', icon: ListBulletIcon, format: '- ', wrapper: false },
@@ -375,13 +374,6 @@ const isEditing = computed(() => !!props.post)
 const canSave = computed(() => {
   const result = form.value.title.trim() &&
     !slugError.value;
-  
-  console.log('canSave check:', {
-    title: !!form.value.title.trim(),
-    noSlugError: !slugError.value,
-    result
-  });
-  
   return result;
 });
 
@@ -406,8 +398,6 @@ const renderedContent = computed(() => {
 
 // Charger les données du post si en mode édition
 onMounted(() => {
-  console.log('BlogEditor mounted, props.post:', props.post);
-  
   if (props.post) {
     form.value = {
       title: props.post.title || '',
@@ -422,12 +412,10 @@ onMounted(() => {
         : '',
       draft: props.post.draft ?? true
     }
-    console.log('Form initialized with existing post:', form.value);
   } else {
     // Valeurs par défaut pour un nouveau post
     form.value.publishDate = new Date().toISOString().slice(0, 16)
-    form.value.author = 'Ondes Actives' // Assurez-vous que l'auteur est défini
-    console.log('Form initialized for new post:', form.value);
+    form.value.author = 'Ondes Actives'
   }
 })
 
@@ -580,9 +568,6 @@ const handleKeydown = (event) => {
 }
 
 const handleSubmit = async () => {
-  console.log('handleSubmit called, form.value:', form.value);
-  console.log('canSave:', canSave.value);
-
   if (!canSave.value) {
     console.log('Cannot save - validation failed');
     return;
@@ -603,9 +588,8 @@ const handleSubmit = async () => {
       draft: form.value.draft
     }
 
-    console.log('Emitting save event with:', postData);
     emit('save', postData)
-    
+
   } catch (error) {
     console.error('Error in handleSubmit:', error);
     loading.value = false;
