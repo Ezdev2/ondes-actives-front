@@ -16,10 +16,7 @@
       <div class="flex flex-col items-center md:items-start text-center md:text-left space-y-8">
         <div class="animate-slide-up">
           <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">
-            À Propos
-            <span
-              class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">d'Ondes
-              Actives</span>
+            À Propos d'Ondes Actives
           </h1>
         </div>
 
@@ -74,7 +71,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 animate-fade-in-up">
         <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-          Notre <span class="bg-gradient-to-r from-pink-400 to-rose-500 bg-clip-text text-transparent">Mission</span>
+          Notre Mission
         </h2>
       </div>
 
@@ -106,7 +103,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 animate-fade-in-up">
         <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-          Nos <span class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Valeurs</span>
+          Nos Valeurs
         </h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Les piliers qui guident notre accompagnement quotidien
@@ -183,9 +180,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 animate-fade-in-up">
         <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-          Et si on <span
-            class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">faisait
-            connaissance</span> ?
+          Et si on faisait connaissance ?
         </h2>
       </div>
 
@@ -298,76 +293,6 @@
     </div>
   </section>
 
-  <!-- Expertise Section -->
-  <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Titre -->
-      <div class="text-center mb-16 animate-fade-in-up">
-        <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-          Pourquoi Choisir
-          <span class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-            Ondes Actives ?
-          </span>
-        </h2>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Une expertise reconnue au service de votre réussite
-        </p>
-      </div>
-
-      <!-- Contenu -->
-      <div
-        class="bg-white/80 backdrop-blur-sm md:p-12 p-8 rounded-3xl border border-gray-100 shadow-lg animate-on-scroll">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-          <!-- Liste gauche -->
-          <div class="space-y-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              Notre Expertise
-            </h3>
-
-            <div class="space-y-4">
-              <div v-for="(item, index) in expertiseList" :key="index"
-                class="flex items-start gap-4 group animate-on-scroll" :style="{ animationDelay: `${index * 100}ms` }">
-                <div
-                  class="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
-                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span class="text-gray-600 leading-relaxed">{{ item }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bloc engagement -->
-          <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-8 rounded-2xl border border-pink-100">
-            <div class="text-center">
-              <div
-                class="w-16 h-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-3">Notre Engagement</h4>
-              <p class="text-gray-700 leading-relaxed">
-                Nous nous engageons à être votre partenaire de confiance, en vous offrant des solutions sur mesure qui
-                évoluent avec votre entreprise. Votre succès est notre priorité.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- CTA -->
   <section class="py-20 bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 relative overflow-hidden">
     <div
@@ -396,13 +321,6 @@
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
-
-const expertiseList = ref([
-  "Plus de 10 ans d'expérience en administration d'entreprise",
-  "Équipe de professionnels certifiés et qualifiés",
-  "Solutions adaptées à tous types d'entreprises",
-  "Support continu et accompagnement personnalisé"
-])
 
 let observer = null
 

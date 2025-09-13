@@ -17,7 +17,7 @@
 
         <!-- Navigation -->
         <nav class="flex justify-center">
-          <ul class="flex space-x-12 text-gray-700">
+          <ul class="flex  md:flex-row flex-col space-x-12 text-gray-700">
             <li>
               <RouterLink to="/" class="hover:text-pink-500 transition-colors">
                 Accueil
@@ -25,7 +25,7 @@
             </li>
             <li>
               <RouterLink to="/#services" class="hover:text-pink-500 transition-colors">
-                Soolutions
+                Solutions
               </RouterLink>
             </li>
             <li>
@@ -78,7 +78,7 @@
   <!-- Footer content -->
   <footer class="bg-white py-12">
     <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-3 gap-12">
+      <div class="grid md:grid-cols-3 gap-12">
         <!-- Solutions column -->
         <div>
           <h3 class="text-lg font-semibold text-gray-900 mb-6">Solutions</h3>
@@ -106,8 +106,7 @@
           <ul class="space-y-3 text-gray-600">
             <li><a href="mailto:contact@ondesactives.com"
                 class="font-medium">contact@ondesactives.com</a></li>
-            <li><a href="tel:+33123456789" class="font-medium">+33 1 23 45 67
-                89</a></li>
+            <li><a href="tel:+33123456789" class="font-medium">+33 06 47 12 68 51</a></li>
             <li>5 avenue Vital Biraben, 64100 Bayonne</li>
           </ul>
         </div>
@@ -118,7 +117,7 @@
   <!-- Bottom footer -->
   <div class="bg-white border-t border-green-600 py-6">
     <div class="max-w-7xl mx-auto px-6">
-      <div class="flex justify-between items-center text-sm text-gray-600">
+      <div class="flex md:flex-row flex-col-reverse gap-4 justify-between items-center text-sm text-gray-600">
         <div>OndesActives - 2025</div>
         <div class="flex space-x-8">
           <RouterLink to="/legal" class="hover:text-pink-500 transition-colors">

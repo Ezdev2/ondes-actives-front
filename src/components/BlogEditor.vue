@@ -29,11 +29,6 @@
               Annuler
             </button>
 
-            <!-- <button v-if="!form.draft" @click="saveDraft"
-              class="flex-1 px-6 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-              Sauver brouillon
-            </button> -->
-
             <button @click="handleSubmit" :disabled="loading || !canSave"
               class="flex-1 px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
               <span v-if="loading" class="flex items-center justify-center gap-2">

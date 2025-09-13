@@ -16,8 +16,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
       <div>
         <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-          Notre <span
-            class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">Blog</span>
+          Notre Blog
         </h1>
         <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
           Découvrez nos conseils d'experts, actualités et guides pratiques pour optimiser votre gestion d'entreprise.
@@ -45,7 +44,7 @@
   </section>
 
   <!-- Blog Posts Section -->
-  <section class="py-20 bg-white">
+  <section class="pb-8 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div v-if="loading" class="flex flex-col md:flex-row gap-8 w-full">
         <div v-for="i in 3" :key="i"

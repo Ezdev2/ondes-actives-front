@@ -18,10 +18,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
       <div class="animate-slide-up">
         <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-          Contactez
-          <span class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">
-            Ondes Actives
-          </span>
+          Contactez Ondes Actives
         </h1>
       </div>
 
@@ -73,7 +70,7 @@
       <div class="grid lg:grid-cols-2 gap-16">
         <!-- Formulaire de contact -->
         <div class="animate-fade-in-left">
-          <div class="bg-white/80 backdrop-blur-sm p-10 rounded-3xl border border-gray-100 shadow-lg">
+          <div class="bg-white/80 backdrop-blur-sm p-6 md:p-10 rounded-3xl border border-gray-100 shadow-lg">
             <div class="mb-8">
               <div
                 class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 mb-4">
@@ -85,7 +82,7 @@
                 <span class="font-medium">Envoyez-nous un message</span>
               </div>
               <h2 class="text-3xl font-bold text-gray-800 mb-4">
-                Parlons de votre <span class="text-green-500">projet</span>
+                Parlons de votre projet
               </h2>
               <p class="text-gray-600">
                 Remplissez ce formulaire et nous vous répondrons dans les plus
@@ -181,7 +178,7 @@
         <div class="space-y-8 animate-fade-in-right">
           <!-- Coordonnées -->
           <div
-            class="bg-gradient-to-br from-rose-50 to-pink-50 p-10 rounded-3xl border border-rose-100 relative overflow-hidden">
+            class="bg-gradient-to-br from-rose-50 to-pink-50 p-6 md:p-10 rounded-3xl border border-rose-100 relative overflow-hidden">
             <div class="absolute top-4 right-4 w-20 h-20 bg-white/30 rounded-full animate-pulse-gentle">
             </div>
             <div class="absolute bottom-8 left-4 w-16 h-16 bg-white/20 rounded-full animate-pulse-gentle"
@@ -225,7 +222,7 @@
 
                 <div class="flex items-start gap-4">
                   <div
-                    class="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-500 text-white rounded-xl flex items-center justify-center flex-shrink-0">
+                    class="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
@@ -234,14 +231,13 @@
                   </div>
                   <div>
                     <h4 class="font-semibold text-gray-900 mb-1">Téléphone</h4>
-                    <a href="tel:+33123456789" class="text-blue-600 hover:text-blue-700 font-medium">+33 1 23 45 67
-                      89</a>
+                    <a href="tel:+330647126851" class="text-green-600 hover:text-pink-700 font-medium">+33  06 47 12 68 51</a>
                   </div>
                 </div>
 
                 <div class="flex items-start gap-4">
                   <div
-                    class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-xl flex items-center justify-center flex-shrink-0">
+                    class="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -251,7 +247,7 @@
                   <div>
                     <h4 class="font-semibold text-gray-900 mb-1">Email</h4>
                     <a href="mailto:contact@ondesactives.com"
-                      class="text-pink-600 hover:text-purple-700 font-medium">contact@ondesactives.com</a>
+                      class="text-green-600 hover:text-pink-700 font-medium">contact@ondesactives.com</a>
                   </div>
                 </div>
               </div>
@@ -261,7 +257,7 @@
                 <h4 class="font-semibold text-gray-900 mb-4">Suivez-nous</h4>
                 <div class="flex justify-center space-x-4">
                   <a href="#"
-                    class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+                    class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path
                         d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z">
@@ -269,7 +265,7 @@
                     </svg>
                   </a>
                   <a href="https://www.linkedin.com/in/laurie-le-s%C3%A9han-884ab756"
-                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+                    class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path
                         d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
@@ -277,7 +273,7 @@
                     </svg>
                   </a>
                   <a href="https://www.instagram.com/ondes_actives?igsh=MXE1c3F4OW1vbzZu"
-                    class="w-10 h-10 bg-gradient-to-r from-red-400 to-emerald-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+                    class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                     <svg class="w-5 h-5" fill="currentColor" width="24px" height="24px" viewBox="0 0 0.72 0.72"
                       xmlns="http://www.w3.org/2000/svg" data-name="Layer 1">
                       <path
@@ -290,7 +286,7 @@
             </div>
 
             <!-- Business Hours -->
-            <div class="bg-white/50 p-8 rounded-2xl border border-gray-100 mt-8">
+            <div class="md:bg-white/50 p-0 md:p-8 rounded-2xl border border-gray-100 mt-8">
               <h2 class="text-2xl font-semibold text-gray-900 mb-6">
                 Horaires d'Ouverture
               </h2>
@@ -340,7 +336,7 @@ const contactMethods = [
     value: "contact@ondesactives.com",
     description: "Écrivez-nous un email",
     icon: "mail",
-    color: "blue",
+    color: "green",
     link: "mailto:contact@ondesactives.com",
   },
   {
@@ -348,7 +344,7 @@ const contactMethods = [
     value: "Suivez-nous",
     description: "Restez connectés",
     icon: "share",
-    color: "pink",
+    color: "green",
     link: "#social",
   },
 ]

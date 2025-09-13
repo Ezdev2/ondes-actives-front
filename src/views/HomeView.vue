@@ -19,18 +19,18 @@
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 items-center gap-4 relative z-10">
         <!-- Left Column -->
         <div class="text-center md:text-left space-y-8">
-          <p class="text-3xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+          <p class="lg:text-3xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
             Solutions opérationnelles pour petites structures
           </p>
           <div class="animate-slide-up" :class="{ active: isInView.hero }">
-            <h1 class="text-4xl md:text-[54px] font-bold text-gray-800 mb-6 leading-tight">
+            <h1 class="text-4xl lg:text-[54px] font-bold text-gray-800 mb-6 leading-tight">
               Ici on prend en <br> charge vos tâches <br> chronophages.
 
             </h1>
           </div>
 
           <div class="animate-slide-up-delay" :class="{ active: isInView.hero }">
-            <p class="text-3xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+            <p class="lg:text-3xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
               Ondes actives vous aide à reprendre le contrôle sur votre quotidien professionel
             </p>
           </div>
@@ -40,7 +40,7 @@
               :class="{ active: isInView.hero }">
 
               <router-link to="/#services"
-                class="group flex items-center text-md bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
+                class="group flex items-center justify-center text-md bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
                 <span class="flex items-center justify-center gap-1">
                   Découvrir les Solutions
                   <ArrowRightIcon class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -57,7 +57,7 @@
               </router-link>
             </div>
             <router-link to="/about"
-              class="w-[fit-content] flex items-center text-xs flex bg-green-500/20 items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full font-light">
+              class="md:w-[fit-content] flex items-center text-xs flex bg-green-500/20 items-center justify-center gap-1 text-gray-700 px-4 py-2 rounded-full font-light w-full">
               Entreprenariat solidaire et responsable
             </router-link>
           </div>
@@ -72,13 +72,50 @@
     </section>
 
     <!-- Services Section -->
+    <section class="md:py-20">
+      <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Titre -->
+        <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.services }">
+          <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
+            Trouvez le service qu'il vous faut
+          </h2>
+          <p class="text-gray-700 max-w-4xl mx-auto leading-relaxed">
+            Chaque structure est unique et fait face à ses propres défis : manque de temps, surcharge administrative,
+            besoin d'organisation ou de visibilité. L'essentiel, c'est de trouver des solutions simples et adaptées pour
+            avancer plus sereinement.
+          </p>
+        </div>
+
+        <!-- Cartes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-6 gap-8">
+          <div v-for="(card, index) in serviceCards" :key="index"
+            class="relative rounded-2xl shadow-lg flex flex-col items-center text-center p-6 pt-12" :class="card.bg">
+            <!-- Icône onglet -->
+            <div class="absolute -top-6 flex justify-center w-full">
+              <div :class="card.bg" class="rounded-xl p-4">
+                <component :is="card.icon" class="h-8 w-8 text-white" />
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4" v-html="card.title" :class="card.textColor"></h3>
+            <p class="text-sm leading-relaxed mb-6" :class="card.textColor">
+              {{ card.description }}
+            </p>
+            <router-link to="/contact"
+              class="bg-white text-gray-800 px-6 py-2 rounded-full font-medium hover:bg-gray-50 transition-colors">
+              Découvrir
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Domains section -->
     <section id="services" class="md:py-20 py-12 bg-gradient-to-b from-white to-gray-50">
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.services }">
           <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-            Nos <span
-              class="bg-gradient-to-r bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent animate-gradient">domaines
-              d'intervention</span>
+            Nos domaines d'intervention
           </h2>
           <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Des solutions complètes et sur mesure pour accompagner votre entreprise
@@ -90,7 +127,6 @@
           <div v-for="(service, index) in services" :key="index"
             :class="`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 animate-on-scroll`"
             :style="{ animationDelay: `${index * 200}ms` }" ref="serviceRefs">
-            <!-- Contenu texte -->
             <div class="flex-1 space-y-6">
               <div
                 :class="`inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r ${getServiceColorClasses(service.color, 'badge')}`">
@@ -117,12 +153,10 @@
               </router-link>
             </div>
 
-            <!-- Illustration -->
             <div class="flex-1 justify-center hidden md:flex">
               <div
                 :class="`relative w-80 h-80 rounded-3xl bg-gradient-to-br ${getServiceColorClasses(service.color, 'illustration')} flex items-center justify-center overflow-hidden animate-gentle-bounce`">
                 <img class="p-10" :src="service.image" alt="">
-                <!-- Éléments décoratifs -->
                 <div class="absolute top-4 right-4 w-8 h-8 bg-white/30 rounded-full animate-pulse"></div>
                 <div class="absolute bottom-8 left-4 w-6 h-6 bg-white/20 rounded-full animate-pulse"
                   style="animation-delay: 1s;"></div>
@@ -138,9 +172,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up">
           <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-            Et si on <span
-              class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-gradient">faisait
-              connaissance</span> ?
+            Et si on faisait connaissance ?
           </h2>
         </div>
 
@@ -258,8 +290,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.faq }">
           <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-            Questions <span
-              class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Fréquentes</span>
+            Questions Fréquentes
           </h2>
           <p class="text-xl text-gray-600 max-w-2xl mx-auto">
             Toutes les réponses à vos questions sur nos services d'accompagnement
@@ -316,72 +347,12 @@
       </div>
     </section>
 
-    <!-- Expertise Section -->
-    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.expertise }">
-          <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-            Pourquoi Choisir <span
-              class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Ondes Actives ?</span>
-          </h2>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-            Une expertise reconnue au service de votre réussite
-          </p>
-        </div>
-
-        <div
-          class="bg-white/80 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-gray-100 shadow-lg animate-on-scroll"
-          :class="{ active: isInView.expertise }">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Expertise List -->
-            <div class="space-y-6">
-              <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <div
-                  class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
-                  <CheckIcon class="w-5 h-5 text-white" />
-                </div>
-                Notre Expertise
-              </h3>
-
-              <div class="space-y-4">
-                <div v-for="(item, index) in expertiseItems" :key="index"
-                  class="flex items-start gap-4 group animate-on-scroll"
-                  :style="{ animationDelay: `${index * 100}ms` }">
-                  <div
-                    class="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
-                    <CheckIcon class="w-3 h-3 text-white" />
-                  </div>
-                  <span class="text-gray-600 leading-relaxed">{{ item }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Engagement Box -->
-            <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-8 rounded-2xl border border-pink-100">
-              <div class="text-center">
-                <div
-                  class="w-16 h-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <HeartIcon class="w-8 h-8 text-white" />
-                </div>
-                <h4 class="text-xl font-bold text-gray-800 mb-3">Notre Engagement</h4>
-                <p class="text-gray-700 leading-relaxed">
-                  Nous nous engageons à être votre partenaire de confiance, en vous offrant des solutions sur mesure qui
-                  évoluent avec votre entreprise. Votre succès est notre priorité.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- blog -->
-    <section class="py-20 bg-white">
+    <section class="pb-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.expertise }">
           <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
-            Prenez connaissance du blog de <span
-              class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Ondes Actives ?</span>
+            Prenez connaissance du blog de Ondes Actives ?
           </h2>
           <p class="text-xl text-gray-600 max-w-3xl mx-auto">
             Gestion, administration, délégation, découvrez les different articles en ligne.
@@ -525,7 +496,11 @@ import {
   BoltIcon,
   PhoneIcon,
   GlobeAltIcon,
-  SparklesIcon
+  SparklesIcon,
+  DocumentTextIcon,
+  UsersIcon,
+  BriefcaseIcon,
+  EnvelopeIcon,
 } from '@heroicons/vue/24/outline'
 import image1 from "@/assets/48.png"
 import image2 from "@/assets/47.png"
@@ -591,6 +566,41 @@ const getTagDotClass = (tag) => {
   }
   return dotClasses[tag] || 'bg-gray-500'
 }
+
+const serviceCards = ref([
+  {
+    bg: 'bg-green-500',
+    textColor: 'text-green-100',
+    icon: DocumentTextIcon,
+    title: 'Assistance<br>administrative',
+    description:
+      "Vous souhaitez confier votre administratif à une personne de confiance, efficace et organisée? Je prends en charge vos tâches quotidiennes pour vous permettre de rester concentré sur l'essentiel.",
+  },
+  {
+    bg: 'bg-red-300',
+    textColor: 'text-red-100',
+    icon: UsersIcon,
+    title: 'Gestion des <br>ressources humaines ',
+    description:
+      "Vous avez besoin de structurer vos démarches RH? Je vous accompagne dans le suivi administratif des salariés, les recrutements, la gestion des plannings et des dossiers du personnel.",
+  },
+  {
+    bg: 'bg-teal-500',
+    textColor: 'text-teal-100',
+    icon: BriefcaseIcon,
+    title: 'Appui à la <br>gestion d\'entreprise',
+    description:
+      "Vous souhaitez gagner en clarté et mieux organiser votre quotidien? Je vous aide à structurer vos outils, suivre vos indicateurs et gérer vos priorités pour avancer de manière plus fluide et sereine.",
+  },
+  {
+    bg: 'bg-gray-500',
+    textColor: 'text-gray-300',
+    icon: EnvelopeIcon,
+    title: 'Création <br>de contenus',
+    description:
+      "Vous manquez de temps ou d’inspiration pour vos textes? Je vous accompagne dans la création de contenus pour vos réseaux, votre site ou vos supports professionnels à l’image de votre structure.",
+  },
+])
 
 const services = ref([
   {
@@ -685,13 +695,6 @@ const faqs = ref([
     question: "Puis-je avoir un suivi de l'avancement de mes dossiers ?",
     answer: "Absolument ! Nous fournissons un suivi régulier de tous vos dossiers avec des rapports détaillés et sommes toujours disponibles pour répondre à vos questions sur l'avancement."
   }
-])
-
-const expertiseItems = ref([
-  "Plus de 10 ans d'expérience en administration d'entreprise",
-  "Équipe de professionnels certifiés et qualifiés",
-  "Solutions adaptées à tous types d'entreprises",
-  "Support continu et accompagnement personnalisé"
 ])
 
 // Methods
@@ -794,6 +797,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.card-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
 /* Animations */
 .animate-on-scroll,
 .animate-fade-in-up,

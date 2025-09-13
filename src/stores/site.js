@@ -18,7 +18,7 @@ export const useSiteStore = defineStore('site', () => {
 
   const navigation = ref([
     { name: 'Accueil', href: '/', current: false },
-    { name: 'Solution', href: '/#services', current: false },
+    { name: 'Solutions', href: '/#services', current: false },
     { name: 'À Propos', href: '/about', current: false },
     { name: 'Blog', href: '/blog', current: false },
     // { name: 'FAQ', href: '/faq', current: false },
