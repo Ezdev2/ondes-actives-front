@@ -1,5 +1,5 @@
 <template>
-  <article v-if="post" class="md:py-20">
+  <article v-if="post" class="md:pb-20">
     <!-- Hero Section -->
     <section class="relative">
       <div v-if="post.heroImage" class="relative h-96 overflow-hidden animate-fade-in-up">

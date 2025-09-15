@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { supabase, isAdmin } from '@/lib/supabase'
+import { 
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  sendPasswordResetEmail,
+  onAuthStateChanged
+} from 'firebase/auth'
+import { auth, isAdmin } from '@/lib/firebase'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
@@ -9,78 +15,68 @@ export const useAuthStore = defineStore('auth', () => {
 
   const initAuth = async () => {
     try {
-      // Vérifier la session existante
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        user.value = session.user
-        isAdminUser.value = await isAdmin()
-      }
-
       // Écouter les changements d'authentification
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN' && session?.user) {
-          user.value = session.user
-          isAdminUser.value = await isAdmin()
-        } else if (event === 'SIGNED_OUT') {
+      onAuthStateChanged(auth, (firebaseUser) => {
+        if (firebaseUser) {
+          user.value = {
+            id: firebaseUser.uid,
+            email: firebaseUser.email,
+            emailVerified: firebaseUser.emailVerified
+          }
+          isAdminUser.value = isAdmin()
+        } else {
           user.value = null
           isAdminUser.value = false
         }
+        loading.value = false
       })
     } catch (error) {
       console.error('Error initializing auth:', error)
-    } finally {
       loading.value = false
     }
   }
 
   const signIn = async (email, password) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
-
-      if (error) throw error
-
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      
       // Tous les utilisateurs authentifiés sont considérés comme admin
-      if (data.user) {
+      if (userCredential.user) {
         isAdminUser.value = true
       }
-
+      
       return { success: true }
     } catch (error) {
       console.error('Sign in error:', error)
-      return { success: false, error: error.message }
+      let errorMessage = 'Erreur de connexion'
+      
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Aucun compte trouvé avec cet email'
+          break
+        case 'auth/wrong-password':
+          errorMessage = 'Mot de passe incorrect'
+          break
+        case 'auth/invalid-email':
+          errorMessage = 'Email invalide'
+          break
+        case 'auth/too-many-requests':
+          errorMessage = 'Trop de tentatives. Réessayez plus tard'
+          break
+        case 'auth/invalid-credential':
+          errorMessage = 'Email ou mot de passe incorrect'
+          break
+        default:
+          errorMessage = error.message
+      }
+      
+      return { success: false, error: errorMessage }
     }
   }
 
-  // const signUp = async (email, password) => {
-  //   try {
-  //     const { data, error } = await supabase.auth.signUp({
-  //       email,
-  //       password
-  //     })
-
-  //     if (error) throw error
-      
-  //     return { 
-  //       success: true, 
-  //       data,
-  //       message: data.user && !data.user.email_confirmed_at ? 
-  //         'Vérifiez votre email pour confirmer votre compte.' : 
-  //         'Compte créé avec succès !'
-  //     }
-  //   } catch (error) {
-  //     console.error('Sign up error:', error)
-  //     return { success: false, error: error.message }
-  //   }
-  // }
-
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
-      
+      await firebaseSignOut(auth)
       user.value = null
       isAdminUser.value = false
       return { success: true }
@@ -92,12 +88,24 @@ export const useAuthStore = defineStore('auth', () => {
 
   const resetPassword = async (email) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email)
-      if (error) throw error
+      await sendPasswordResetEmail(auth, email)
       return { success: true }
     } catch (error) {
       console.error('Reset password error:', error)
-      return { success: false, error: error.message }
+      let errorMessage = 'Erreur lors de l\'envoi'
+      
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Aucun compte trouvé avec cet email'
+          break
+        case 'auth/invalid-email':
+          errorMessage = 'Email invalide'
+          break
+        default:
+          errorMessage = error.message
+      }
+      
+      return { success: false, error: errorMessage }
     }
   }
 
@@ -107,7 +115,6 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     initAuth,
     signIn,
-    // signUp,
     signOut,
     resetPassword
   }

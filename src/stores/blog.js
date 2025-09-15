@@ -1,11 +1,26 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { supabase } from "@/lib/supabase";
+import { 
+  collection, 
+  doc, 
+  getDocs, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  query, 
+  where, 
+  orderBy, 
+  serverTimestamp 
+} from 'firebase/firestore'
+import { db } from "@/lib/firebase";
 
 export const useBlogStore = defineStore("blog", () => {
   const posts = ref([]);
   const loading = ref(false);
   const error = ref(null);
+
+  // Collection reference
+  const postsCollection = collection(db, 'blog_posts')
 
   // Charger tous les posts publiés (pour le public)
   const loadPublishedPosts = async () => {
@@ -13,19 +28,27 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = true;
       error.value = null;
 
-      const { data, error: supabaseError } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("draft", false)
-        .order("publish_date", { ascending: false });
+      const q = query(
+        postsCollection,
+        where("draft", "==", false),
+        orderBy("publishDate", "desc")
+      );
 
-      if (supabaseError) throw supabaseError;
+      const querySnapshot = await getDocs(q);
+      const data = [];
 
-      posts.value = data.map((post) => ({
-        ...post,
-        publishDate: post.publish_date,
-        heroImage: post.hero_image,
-      }));
+      querySnapshot.forEach((doc) => {
+        const postData = doc.data();
+        data.push({
+          id: doc.id,
+          ...postData,
+          // Convertir les timestamps Firestore en dates
+          publishDate: postData.publishDate?.toDate?.() || postData.publishDate,
+          createdAt: postData.createdAt?.toDate?.() || postData.createdAt,
+        });
+      });
+
+      posts.value = data;
     } catch (err) {
       error.value = err.message;
       console.error("Error loading published posts:", err);
@@ -40,18 +63,22 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = true;
       error.value = null;
 
-      const { data, error: supabaseError } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const q = query(postsCollection, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = [];
 
-      if (supabaseError) throw supabaseError;
+      querySnapshot.forEach((doc) => {
+        const postData = doc.data();
+        data.push({
+          id: doc.id,
+          ...postData,
+          // Convertir les timestamps Firestore en dates
+          publishDate: postData.publishDate?.toDate?.() || postData.publishDate,
+          createdAt: postData.createdAt?.toDate?.() || postData.createdAt,
+        });
+      });
 
-      posts.value = data.map((post) => ({
-        ...post,
-        publishDate: post.publish_date,
-        heroImage: post.hero_image,
-      }));
+      posts.value = data;
     } catch (err) {
       error.value = err.message;
       console.error("Error loading all posts:", err);
@@ -61,40 +88,40 @@ export const useBlogStore = defineStore("blog", () => {
   };
 
   // Créer un nouveau post
-  const createPost = async (postData) => {    
+  const createPost = async (postData) => {
     try {
       loading.value = true;
       error.value = null;
-      const { data, error: supabaseError } = await supabase
-        .from("blog_posts")
-        .insert({
-          title: postData.title,
-          description: postData.description,
-          content: postData.content,
-          author: postData.author,
-          slug: postData.slug,
-          hero_image: postData.heroImage,
-          tags: postData.tags,
-          draft: postData.draft,
-          publish_date: postData.publishDate,
-        })
-        .select()
-        .single();
-      if (supabaseError) {
-        console.error("Supabase error details:", supabaseError);
-        throw supabaseError;
-      }
 
       const newPost = {
-        ...data,
-        publishDate: data.publish_date,
-        heroImage: data.hero_image,
+        title: postData.title,
+        description: postData.description,
+        content: postData.content,
+        author: postData.author,
+        slug: postData.slug,
+        heroImage: postData.heroImage,
+        tags: postData.tags || [],
+        draft: postData.draft,
+        publishDate: new Date(postData.publishDate),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
       };
-      posts.value.unshift(newPost);
 
-      return { success: true, data: newPost };
+      const docRef = await addDoc(postsCollection, newPost);
+
+      // Récupérer le post créé avec l'ID
+      const createdPost = {
+        id: docRef.id,
+        ...newPost,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      posts.value.unshift(createdPost);
+
+      return { success: true, data: createdPost };
     } catch (err) {
-      console.error("Full error object:", err);
+      console.error("Error creating post:", err);
       error.value = err.message;
       return { success: false, error: err.message };
     } finally {
@@ -108,35 +135,33 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = true;
       error.value = null;
 
-      const { data, error: supabaseError } = await supabase
-        .from("blog_posts")
-        .update({
-          title: postData.title,
-          description: postData.description,
-          content: postData.content,
-          author: postData.author,
-          slug: postData.slug,
-          hero_image: postData.heroImage,
-          tags: postData.tags,
-          draft: postData.draft,
-          publish_date: postData.publishDate,
-        })
-        .eq("id", id)
-        .select()
-        .single();
+      const postRef = doc(db, 'blog_posts', id);
+      
+      const updatedData = {
+        title: postData.title,
+        description: postData.description,
+        content: postData.content,
+        author: postData.author,
+        slug: postData.slug,
+        heroImage: postData.heroImage,
+        tags: postData.tags || [],
+        draft: postData.draft,
+        publishDate: new Date(postData.publishDate),
+        updatedAt: serverTimestamp()
+      };
 
-      if (supabaseError) throw supabaseError;
+      await updateDoc(postRef, updatedData);
 
       // Mettre à jour le post dans le store
       const updatedPost = {
-        ...data,
-        publishDate: data.publish_date,
-        heroImage: data.hero_image,
+        id: id,
+        ...updatedData,
+        updatedAt: new Date()
       };
 
       const index = posts.value.findIndex((post) => post.id === id);
       if (index !== -1) {
-        posts.value[index] = updatedPost;
+        posts.value[index] = { ...posts.value[index], ...updatedPost };
       }
 
       return { success: true, data: updatedPost };
@@ -155,12 +180,8 @@ export const useBlogStore = defineStore("blog", () => {
       loading.value = true;
       error.value = null;
 
-      const { error: supabaseError } = await supabase
-        .from("blog_posts")
-        .delete()
-        .eq("id", id);
-
-      if (supabaseError) throw supabaseError;
+      const postRef = doc(db, 'blog_posts', id);
+      await deleteDoc(postRef);
 
       // Retirer le post du store
       posts.value = posts.value.filter((post) => post.id !== id);
@@ -185,9 +206,11 @@ export const useBlogStore = defineStore("blog", () => {
     return posts.value
       .filter((post) => !post.draft)
       .sort(
-        (a, b) =>
-          new Date(b.publishDate || b.publish_date).getTime() -
-          new Date(a.publishDate || a.publish_date).getTime()
+        (a, b) => {
+          const dateA = new Date(a.publishDate);
+          const dateB = new Date(b.publishDate);
+          return dateB.getTime() - dateA.getTime();
+        }
       );
   };
 
@@ -206,17 +229,21 @@ export const useBlogStore = defineStore("blog", () => {
   // Vérifier si un slug existe déjà
   const checkSlugExists = async (slug, excludeId = null) => {
     try {
-      let query = supabase.from("blog_posts").select("id").eq("slug", slug);
-
+      const q = query(postsCollection, where("slug", "==", slug));
+      const querySnapshot = await getDocs(q);
+      
       if (excludeId) {
-        query = query.neq("id", excludeId);
+        // Vérifier si un autre document (différent de excludeId) a le même slug
+        let exists = false;
+        querySnapshot.forEach((doc) => {
+          if (doc.id !== excludeId) {
+            exists = true;
+          }
+        });
+        return exists;
       }
 
-      const { data, error: supabaseError } = await query;
-
-      if (supabaseError) throw supabaseError;
-
-      return data && data.length > 0;
+      return !querySnapshot.empty;
     } catch (err) {
       console.error("Error checking slug:", err);
       return false;
