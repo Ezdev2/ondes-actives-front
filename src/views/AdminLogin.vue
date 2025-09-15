@@ -98,7 +98,7 @@
         </div>
 
         <!-- Modal signup -->
-        <div v-if="showSignup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div v-if="showSignup" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
           <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Créer un compte administrateur</h3>
             <form @submit.prevent="handleSignup">
@@ -160,8 +160,6 @@ const signupForm = ref({
   password: '',
   confirmPassword: ''
 })
-// const signupLoading = ref(false)
-// const signupError = ref('')
 
 const handleLogin = async () => {
   loading.value = true
@@ -189,41 +187,4 @@ const handleResetPassword = async () => {
     alert('Erreur lors de l\'envoi : ' + result.error)
   }
 }
-
-// const handleSignup = async () => {
-//   signupError.value = ''
-
-//   if (signupForm.value.password !== signupForm.value.confirmPassword) {
-//     signupError.value = 'Les mots de passe ne correspondent pas'
-//     return
-//   }
-
-//   if (signupForm.value.password.length < 6) {
-//     signupError.value = 'Le mot de passe doit contenir au moins 6 caractères'
-//     return
-//   }
-
-//   signupLoading.value = true
-
-//   const result = await authStore.signUp(signupForm.value.email, signupForm.value.password)
-
-//   if (result.success) {
-//     alert(result.message || 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.')
-//     closeSignup()
-//   } else {
-//     signupError.value = result.error
-//   }
-
-//   signupLoading.value = false
-// }
-
-// const closeSignup = () => {
-//   showSignup.value = false
-//   signupForm.value = {
-//     email: '',
-//     password: '',
-//     confirmPassword: ''
-//   }
-//   signupError.value = ''
-// }
 </script>

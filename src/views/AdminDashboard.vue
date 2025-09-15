@@ -20,7 +20,7 @@
 
             <div class="flex items-center gap-2">
               <span class="text-sm text-gray-600">{{ authStore.user?.email }}</span>
-              <button @click="handleLogout" class="text-gray-600 hover:text-red-600 transition-colors">
+              <button @click="handleLogout" class="text-red-600 hover:text-red-600 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3H10a3 3 0 013 3v1" />
@@ -190,7 +190,6 @@
 
       <!-- Section Contacts -->
       <div v-if="currentSection === 'contacts'" class="space-y-6">
-        <!-- En-tête avec actions globales -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -210,11 +209,9 @@
             </button>
           </div>
 
-          <!-- Filtres et tri -->
           <div class="mt-6 flex flex-col lg:flex-row lg:items-center gap-4">
             <!-- Filtres -->
             <div class="flex flex-wrap gap-3">
-              <!-- Filtre statut de lecture -->
               <select 
                 v-model="filters.readStatus" 
                 @change="applyFilters"
@@ -225,7 +222,6 @@
                 <option value="read">Lus</option>
               </select>
 
-              <!-- Filtre statut de réponse -->
               <select 
                 v-model="filters.responseStatus" 
                 @change="applyFilters"
@@ -247,7 +243,6 @@
               </select>
             </div>
 
-            <!-- Statistiques -->
             <div class="lg:ml-auto flex items-center gap-4 text-sm text-gray-600">
               <span class="flex items-center gap-1">
                 <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -261,7 +256,6 @@
           </div>
         </div>
 
-        <!-- Tableau des contacts -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div v-if="contactsLoading" class="p-8 text-center">
             <div class="inline-flex items-center gap-2 text-gray-600">
@@ -284,7 +278,6 @@
 
           <div v-else class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-              <!-- En-tête du tableau -->
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -311,7 +304,6 @@
                 </tr>
               </thead>
 
-              <!-- Corps du tableau -->
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr 
                   v-for="contact in paginatedContacts" 
@@ -319,7 +311,6 @@
                   :class="!contact.read ? 'bg-blue-50' : 'hover:bg-gray-50'"
                   class="transition-colors"
                 >
-                  <!-- Nom & Prénom -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 h-8 w-8">
@@ -335,29 +326,25 @@
                     </div>
                   </td>
 
-                  <!-- Email -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">{{ contact.email }}</div>
                   </td>
 
-                  <!-- Entreprise -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">{{ contact.company || '-' }}</div>
                   </td>
 
-                  <!-- Objet -->
                   <td class="px-6 py-4">
                     <div class="text-sm text-gray-900 max-w-xs truncate" :title="contact.subject">
                       {{ contact.subject }}
                     </div>
                   </td>
 
-                  <!-- État -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex flex-col gap-1">
                       <span 
                         :class="contact.read ? 'bg-gray-100 text-gray-800' : 'bg-blue-100 text-blue-800'"
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                        class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                       >
                         {{ contact.read ? 'Lu' : 'Non lu' }}
                       </span>
@@ -370,7 +357,6 @@
                     </div>
                   </td>
 
-                  <!-- Date -->
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{ formatDate(contact.created_at) }}
                   </td>
@@ -378,7 +364,6 @@
                   <!-- Actions -->
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div class="flex items-center gap-2">
-                      <!-- Bouton Voir le message -->
                       <button
                         @click="selectContact(contact)"
                         class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700 transition-colors"
@@ -386,16 +371,6 @@
                         Voir
                       </button>
 
-                      <!-- Bouton Répondre -->
-                      <!-- <a
-                        :href="`https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}&su=Re: ${encodeURIComponent(contact.subject)}&body=Bonjour ${contact.first_name},\n\nMerci pour votre message.\n\nCordialement,\nL'équipe Ondes Actives`"
-                        target="_blank"
-                        class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 transition-colors"
-                      >
-                        Répondre
-                      </a> -->
-
-                      <!-- Actions secondaires -->
                       <div class="flex items-center gap-1">
                         <button
                           @click.stop="toggleContactRead(contact)"
@@ -500,8 +475,8 @@
           </div>
         </div>
 
-        <!-- Détails du contact sélectionné (Modal) -->
-        <div v-if="selectedContact" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <!-- Détails du contact sélectionné -->
+        <div v-if="selectedContact" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="px-6 py-4 border-b border-gray-200">
               <div class="flex items-center justify-between">
@@ -562,16 +537,7 @@
               </div>
 
               <!-- Actions -->
-              <div class="flex flex-col sm:flex-row gap-3">
-                <a
-                  :href="`https://mail.google.com/mail/?view=cm&fs=1&to=${selectedContact.email}&su=Re: ${encodeURIComponent(selectedContact.subject)}&body=Bonjour ${selectedContact.first_name},\n\nMerci pour votre message.\n\nCordialement,\nL'équipe Ondes Actives`"
-                  target="_blank"
-                  class="flex-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-3 rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all font-medium text-center inline-block"
-                >
-                  Répondre par Gmail
-                </a>
-                
-                <button
+              <button
                   @click="toggleContactResponded(selectedContact)"
                   :class="selectedContact.responded 
                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
@@ -580,7 +546,6 @@
                 >
                   {{ selectedContact.responded ? 'Marquer comme non répondu' : 'Marquer comme répondu' }}
                 </button>
-              </div>
             </div>
           </div>
         </div>
@@ -588,7 +553,7 @@
     </main>
 
     <!-- Modal de confirmation de suppression -->
-    <div v-if="postToDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="postToDelete" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -622,7 +587,7 @@
     </div>
 
     <!-- Modal de confirmation de suppression contact -->
-    <div v-if="contactToDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="contactToDelete" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -687,7 +652,7 @@ const contactToDelete = ref(null)
 
 // Nouveaux états pour la pagination et les filtres
 const currentPage = ref(1)
-const itemsPerPage = 50
+const itemsPerPage = 10
 const filters = ref({
   readStatus: 'all', // all, read, unread
   responseStatus: 'all' // all, responded, pending
@@ -776,14 +741,14 @@ const visiblePages = computed(() => {
   return pages
 })
 
-// Vérifier l'authentification au montage
+// Vérifier l'authentification
 onMounted(async () => {
   if (!authStore.isAdminUser) {
     router.push('/admin/login')
     return
   }
   
-  // Charger tous les posts (incluant les brouillons)
+  // Charger tous les posts (avec brouillons)
   await blogStore.loadAllPosts()
   
   // Charger les contacts
@@ -980,7 +945,7 @@ const handleDeleteContact = async () => {
   }
 }
 
-// NOUVELLES fonctions pour la pagination et les filtres
+// pagination & filtres
 const applyFilters = () => {
   currentPage.value = 1 // Retour à la première page lors du changement de filtre
 }

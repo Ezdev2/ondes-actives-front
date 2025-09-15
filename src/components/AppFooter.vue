@@ -19,27 +19,27 @@
         <nav class="flex justify-center">
           <ul class="flex  md:flex-row flex-col space-x-12 text-gray-700">
             <li>
-              <RouterLink to="/" class="hover:text-pink-500 transition-colors">
+              <RouterLink to="/" class="hover:text-green-500 transition-colors">
                 Accueil
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/#services" class="hover:text-pink-500 transition-colors">
+              <RouterLink to="/#services" class="hover:text-green-500 transition-colors">
                 Solutions
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/about" class="hover:text-pink-500 transition-colors">
+              <RouterLink to="/about" class="hover:text-green-500 transition-colors">
                 À Propos
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/blog" class="hover:text-pink-500 transition-colors">
+              <RouterLink to="/blog" class="hover:text-green-500 transition-colors">
                 Blog
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/contact" class="hover:text-pink-500 transition-colors">
+              <RouterLink to="/contact" class="hover:text-green-500 transition-colors">
                 Contact
               </RouterLink>
             </li>
@@ -94,8 +94,8 @@
         <div>
           <h3 class="text-lg font-semibold text-gray-900 mb-6">À propos</h3>
           <ul class="space-y-3 text-gray-600">
-            <li>Des valeurs</li>
-            <li>Une mission et une vision</li>
+            <li class="hover:text-green-500 transition-colors"><a href="/about#value">Des valeurs</a></li>
+            <li class="hover:text-green-500 transition-colors"><a href="/about#mission">Une mission et une vision</a></li>
             <li>Entreprenariat solidaire et responsable</li>
           </ul>
         </div>
@@ -120,13 +120,13 @@
       <div class="flex md:flex-row flex-col-reverse gap-4 justify-between items-center text-sm text-gray-600">
         <div>OndesActives - 2025</div>
         <div class="flex space-x-8">
-          <RouterLink to="/legal" class="hover:text-pink-500 transition-colors">
+          <RouterLink to="/legal" class="hover:text-green-500 transition-colors">
           Mentions Légales
         </RouterLink>
-        <RouterLink to="/privacy" class="hover:text-pink-500 transition-colors">
+        <RouterLink to="/privacy" class="hover:text-green-500 transition-colors">
           Politique de Confidentialité
         </RouterLink>
-        <RouterLink to="/cookies-policy" class="hover:text-pink-500 transition-colors">
+        <RouterLink to="/cookies-policy" class="hover:text-green-500 transition-colors">
           Politique de cookies
         </RouterLink>
         </div>
@@ -157,31 +157,6 @@ footer {
   border-bottom: 1px solid #4CAF50;
   padding-bottom: 30px;
   margin-bottom: 20px;
-}
-
-.footer-logo {
-  flex: 1 1 250px;
-}
-
-.footer-logo h2 {
-  font-size: 28px;
-  margin: 0;
-}
-
-.footer-logo .pink {
-  color: #f28ca0;
-  font-weight: bold;
-}
-
-.footer-logo .green {
-  color: #4CAF50;
-  font-weight: bold;
-}
-
-.footer-logo p {
-  margin-top: 10px;
-  font-size: 15px;
-  color: #333;
 }
 
 .footer-column {

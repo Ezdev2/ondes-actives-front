@@ -217,7 +217,7 @@
                 <span v-if="!submitting">Envoyer le message</span>
                 <span v-else>Envoi en cours...</span>
                 
-                <svg v-if="!submitting" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg v-if="!submitting" class="w-4 h-4 group-hover:translate-x-1 transition-transform rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                 </svg>
                 
@@ -423,51 +423,85 @@ const contactMethods = [
   },
 ]
 
+function waitForRecaptcha() {
+  return new Promise((resolve, reject) => {
+    const check = () => {
+      if (window.grecaptcha) {
+        resolve(window.grecaptcha);
+      } else {
+        setTimeout(check, 100);
+      }
+    };
+    check();
+  });
+}
+
 // Gestion de la soumission du formulaire
 const handleSubmit = async () => {
-  // Reset des messages
-  showSuccessMessage.value = false
-  errorMessage.value = ''
-  
+  showSuccessMessage.value = false;
+  errorMessage.value = '';
+
   // Validation basique
-  if (!formData.value.first_name || !formData.value.last_name || !formData.value.email || !formData.value.subject || !formData.value.message) {
-    errorMessage.value = 'Veuillez remplir tous les champs obligatoires'
-    return
+  if (
+    !formData.value.first_name ||
+    !formData.value.last_name ||
+    !formData.value.email ||
+    !formData.value.subject ||
+    !formData.value.message
+  ) {
+    errorMessage.value = 'Veuillez remplir tous les champs obligatoires';
+    return;
   }
 
-  submitting.value = true
+  submitting.value = true;
 
   try {
-    const result = await contactStore.createContact(formData.value)
-    
-    if (result.success) {
-      showSuccessMessage.value = true
-      
-      // Reset du formulaire
-      formData.value = {
-        first_name: '',
-        last_name: '',
-        email: '',
-        company: '',
-        subject: '',
-        message: ''
-      }
-      
-      // Cacher le message en 5 sec
-      // setTimeout(() => {
-      //   showSuccessMessage.value = false
-      // }, 5000)
-      
-    } else {
-      errorMessage.value = result.error || 'Une erreur est survenue lors de l\'envoi du message'
+
+    const grecaptcha = await waitForRecaptcha();
+    // Récupérer le token reCAPTCHA
+    const token = await grecaptcha.execute(
+      import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+      { action: 'submit' }
+    );
+
+    // Envoyer l'email via backend
+    const response = await fetch(import.meta.env.VITE_EMAIL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData.value,
+        recaptchaToken: token,
+      }),
+    });
+
+    const emailResult = await response.json();
+    if (!response.ok || !emailResult.success) {
+      throw new Error(emailResult.error || 'Erreur lors de l’envoi de l’email');
     }
+
+    // Sauvegarder dans la base de donnée
+    const result = await contactStore.createContact(formData.value);
+    if (!result.success) {
+      throw new Error(result.error || 'Erreur lors de la sauvegarde du contact');
+    }
+
+    showSuccessMessage.value = true;
+    formData.value = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      company: '',
+      subject: '',
+      message: '',
+    };
   } catch (error) {
-    console.error('Error submitting form:', error)
-    errorMessage.value = 'Une erreur technique est survenue. Veuillez réessayer.'
+    console.error('Error submitting form:', error);
+    errorMessage.value =
+      error.message || 'Une erreur technique est survenue. Veuillez réessayer.';
   } finally {
-    submitting.value = false
+    submitting.value = false;
   }
-}
+};
 
 let observer = null
 

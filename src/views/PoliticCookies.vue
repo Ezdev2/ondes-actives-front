@@ -4,8 +4,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="prose prose-lg max-w-none">
         <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          Politique de <span
-            class="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">cookies</span>
+          Politique de cookies
         </h1>
 
         <div class="space-y-8">

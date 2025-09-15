@@ -42,7 +42,6 @@ export const useBlogStore = defineStore("blog", () => {
         data.push({
           id: doc.id,
           ...postData,
-          // Convertir les timestamps Firestore en dates
           publishDate: postData.publishDate?.toDate?.() || postData.publishDate,
           createdAt: postData.createdAt?.toDate?.() || postData.createdAt,
         });
@@ -72,7 +71,6 @@ export const useBlogStore = defineStore("blog", () => {
         data.push({
           id: doc.id,
           ...postData,
-          // Convertir les timestamps Firestore en dates
           publishDate: postData.publishDate?.toDate?.() || postData.publishDate,
           createdAt: postData.createdAt?.toDate?.() || postData.createdAt,
         });
@@ -233,7 +231,6 @@ export const useBlogStore = defineStore("blog", () => {
       const querySnapshot = await getDocs(q);
       
       if (excludeId) {
-        // Vérifier si un autre document (différent de excludeId) a le même slug
         let exists = false;
         querySnapshot.forEach((doc) => {
           if (doc.id !== excludeId) {

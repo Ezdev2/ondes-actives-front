@@ -48,7 +48,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div v-if="loading" class="flex flex-col md:flex-row gap-8 w-full">
         <div v-for="i in 3" :key="i"
-          class="animate-pulse w-full bg-white rounded-lg border border-gray-100 overflow-hidden">
+          class="w-full bg-white rounded-lg border border-gray-100 overflow-hidden">
           <div class="h-48 bg-gray-200"></div>
           <div class="p-8 space-y-4">
             <div class="flex gap-2">
@@ -68,9 +68,11 @@
           </div>
         </div>
       </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <article v-for="(post, index) in publishedPosts" :key="post.id"
-          class="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 overflow-hidden hover:transform hover:scale-105 transition-all duration-300 animate-on-scroll hover:shadow-xl"
+
+      <!-- Articles Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <article v-for="(post, index) in paginatedPosts" :key="post.id"
+          class="group bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 overflow-hidden hover:transform hover:scale-105 transition-all duration-300  hover:shadow-xl"
           :style="{ animationDelay: `${index * 100}ms` }">
           <!-- Featured Image -->
           <div class="relative overflow-hidden">
@@ -128,19 +130,77 @@
           </div>
         </article>
       </div>
-      <!-- Load More Button (si nécessaire) -->
-      <div v-if="publishedPosts.length > 4" class="text-center mt-16">
-        <button
-          class="group bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
-          <span class="flex items-center justify-center gap-2">
-            Charger plus d'articles
-            <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
-              </path>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="flex flex-col items-center space-y-4">
+        <!-- Info pagination -->
+        <div class="text-sm text-gray-600">
+          Affichage {{ ((currentPage - 1) * postsPerPage) + 1 }} à {{ Math.min(currentPage * postsPerPage, totalPosts) }} sur {{ totalPosts }} articles
+        </div>
+        
+        <!-- Boutons pagination -->
+        <div class="flex items-center justify-center space-x-2">
+          <!-- Bouton Précédent -->
+          <button
+            @click="goToPage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2"
+            :class="{ 'hover:border-green-400 hover:text-green-600': currentPage !== 1 }">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-          </span>
-        </button>
+            Précédent
+          </button>
+
+          <!-- Numéros de page -->
+          <div class="flex space-x-1">
+            <!-- Première page -->
+            <button
+              v-if="startPage > 1"
+              @click="goToPage(1)"
+              class="w-10 h-10 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-green-400 hover:text-green-600 transition-all duration-200">
+              1
+            </button>
+            
+            <!-- Points de suspension si nécessaire -->
+            <span v-if="startPage > 2" class="flex items-center px-2 text-gray-500">...</span>
+            
+            <!-- Pages visibles -->
+            <button
+              v-for="page in visiblePages"
+              :key="page"
+              @click="goToPage(page)"
+              class="w-10 h-10 rounded-lg border transition-all duration-200"
+              :class="page === currentPage 
+                ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-500 shadow-md' 
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-green-400 hover:text-green-600'">
+              {{ page }}
+            </button>
+            
+            <!-- Points de suspension si nécessaire -->
+            <span v-if="endPage < totalPages - 1" class="flex items-center px-2 text-gray-500">...</span>
+            
+            <!-- Dernière page -->
+            <button
+              v-if="endPage < totalPages"
+              @click="goToPage(totalPages)"
+              class="w-10 h-10 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-green-400 hover:text-green-600 transition-all duration-200">
+              {{ totalPages }}
+            </button>
+          </div>
+
+          <!-- Bouton Suivant -->
+          <button
+            @click="goToPage(currentPage + 1)"
+            :disabled="currentPage === totalPages"
+            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2"
+            :class="{ 'hover:border-green-400 hover:text-green-600': currentPage !== totalPages }">
+            Suivant
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Empty State -->
@@ -201,6 +261,53 @@ import { useBlogStore } from '@/stores/blog'
 const blogStore = useBlogStore()
 const loading = ref(true)
 const publishedPosts = computed(() => blogStore.getPublishedPosts())
+
+// Pagination
+const currentPage = ref(1)
+const postsPerPage = 9
+
+// Computed pour la pagination
+const totalPosts = computed(() => publishedPosts.value.length)
+const totalPages = computed(() => Math.ceil(totalPosts.value / postsPerPage))
+
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * postsPerPage
+  const end = start + postsPerPage
+  return publishedPosts.value.slice(start, end)
+})
+
+// Calcul des pages visibles dans la pagination
+const startPage = computed(() => {
+  if (currentPage.value <= 3) return 1
+  if (currentPage.value >= totalPages.value - 2) return Math.max(totalPages.value - 4, 1)
+  return currentPage.value - 2
+})
+
+const endPage = computed(() => {
+  if (currentPage.value <= 3) return Math.min(5, totalPages.value)
+  if (currentPage.value >= totalPages.value - 2) return totalPages.value
+  return currentPage.value + 2
+})
+
+const visiblePages = computed(() => {
+  const pages = []
+  for (let i = startPage.value; i <= endPage.value; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+// Méthode pour changer de page
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    // Scroll vers le haut de la section des articles
+    document.querySelector('.grid.md\\:grid-cols-2').scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    })
+  }
+}
 
 // Charger les posts au montage
 onMounted(async () => {

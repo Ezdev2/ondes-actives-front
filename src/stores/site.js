@@ -21,7 +21,6 @@ export const useSiteStore = defineStore('site', () => {
     { name: 'Solutions', href: '/#services', current: false },
     { name: 'À Propos', href: '/about', current: false },
     { name: 'Blog', href: '/blog', current: false },
-    // { name: 'FAQ', href: '/faq', current: false },
     { name: 'Contact', href: '/contact', current: false }
   ])
 

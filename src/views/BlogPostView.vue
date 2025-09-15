@@ -153,7 +153,6 @@ watch(() => route.params.slug, async (newSlug) => {
   }
 })
 
-// IntersectionObserver animations
 let observer = null
 
 const setupIntersectionObserver = () => {
@@ -174,7 +173,7 @@ onUnmounted(() => {
   if (observer) observer.disconnect()
 })
 
-// Render markdown content (simplified)
+// Render markdown content
 const renderedContent = computed(() => {
   if (!post.value) return ''
   let html = post.value.content

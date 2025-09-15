@@ -20,7 +20,7 @@ export const useContactStore = defineStore('contact', {
   },
 
   actions: {
-    // Créer un nouveau contact (appelé depuis le formulaire du site)
+    // Créer un nouveau contact
     async createContact(contactData) {
       this.loading = true
       this.error = null
@@ -33,7 +33,7 @@ export const useContactStore = defineStore('contact', {
           email: contactData.email?.trim() || '',
           subject: contactData.subject?.trim() || '',
           message: contactData.message?.trim() || '',
-          company: contactData.company?.trim() || '', // Toujours inclure, même si vide
+          company: contactData.company?.trim() || '',
           created_at: serverTimestamp(),
           read: false,
           responded: false
@@ -67,7 +67,7 @@ export const useContactStore = defineStore('contact', {
         console.error('Error creating contact:', error)
         this.error = error.message
         
-        // Messages d'erreur plus spécifiques
+        // Messages d'erreur
         if (error.code === 'permission-denied') {
           return { success: false, error: 'Erreur de permissions. Veuillez réessayer.' }
         } else if (error.code === 'invalid-argument') {
@@ -114,7 +114,7 @@ export const useContactStore = defineStore('contact', {
       }
     },
 
-    // Mettre à jour un contact (marquer comme lu/répondu)
+    // Mettre à jour un contact
     async updateContact(contactId, updates) {
       try {
         const contactRef = doc(db, 'contacts', contactId)

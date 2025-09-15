@@ -19,7 +19,7 @@
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 items-center gap-4 relative z-10">
         <!-- Left Column -->
         <div class="text-center md:text-left space-y-8">
-          <p class="lg:text-3xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+          <p class="lg:text-2xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
             Solutions opérationnelles pour petites structures
           </p>
           <div class="animate-slide-up" :class="{ active: isInView.hero }">
@@ -30,7 +30,7 @@
           </div>
 
           <div class="animate-slide-up-delay" :class="{ active: isInView.hero }">
-            <p class="lg:text-3xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
+            <p class="lg:text-2xl text-xl text-gray-600 mb-8 mx-auto md:mx-0 leading-relaxed">
               Ondes actives vous aide à reprendre le contrôle sur votre quotidien professionel
             </p>
           </div>
@@ -72,7 +72,7 @@
     </section>
 
     <!-- Services Section -->
-    <section class="md:py-20">
+    <section id="services" class="md:py-20">
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Titre -->
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.services }">
@@ -111,13 +111,13 @@
     </section>
 
     <!-- Domains section -->
-    <section id="services" class="md:py-20 py-12 bg-gradient-to-b from-white to-gray-50">
+    <section class="md:py-20 py-12 bg-gradient-to-b from-white to-gray-50">
       <div class="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.services }">
           <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">
             Nos domaines d'intervention
           </h2>
-          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p class="text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Des solutions complètes et sur mesure pour accompagner votre entreprise
             vers le succès, avec expertise et bienveillance.
           </p>
@@ -252,16 +252,8 @@
               <h3 class="text-4xl font-bold text-gray-800">Laurie Le Séhan</h3>
               <p class="text-lg text-green-600 font-medium mt-1 mb-6">Fondatrice & CEO</p>
               <div class="flex justify-center space-x-4">
-                <a href="#"
-                  class="w-10 h-10 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
-                  <!-- Twitter Icon placeholder -->
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                  </svg>
-                </a>
                 <a href="https://www.linkedin.com/in/laurie-le-s%C3%A9han-884ab756"
-                  class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+                  class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                   <!-- LinkedIn Icon -->
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -269,7 +261,7 @@
                   </svg>
                 </a>
                 <a href="https://www.instagram.com/ondes_actives?igsh=MXE1c3F4OW1vbzZu"
-                  class="w-10 h-10 bg-gradient-to-r from-red-400 to-emerald-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+                  class="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                   <!-- Instagram Icon -->
                   <svg class="w-5 h-5" fill="currentColor" width="24px" height="24px" viewBox="0 0 0.72 0.72"
                     xmlns="http://www.w3.org/2000/svg" data-name="Layer 1">
@@ -347,7 +339,7 @@
       </div>
     </section>
 
-    <!-- blog -->
+    <!-- Blog Section -->
     <section class="pb-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 animate-fade-in-up" :class="{ active: isInView.expertise }">
@@ -440,7 +432,7 @@
             </div>
           </article>
         </div>
-        <!-- Load More Button (si nécessaire) -->
+        <!-- Load More Button -->
         <div class="text-center mt-16">
           <router-link to="/blog"
             class="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
@@ -524,7 +516,7 @@ const blogStore = useBlogStore()
 const loading = ref(true)
 const publishedPosts = computed(() => blogStore.getPublishedPosts())
 
-// Charger les posts au montage
+// Charger les posts
 onMounted(async () => {
   await blogStore.loadPublishedPosts()
   loading.value = false
@@ -732,7 +724,6 @@ const getServiceColorClasses = (color, type) => {
   return colorMap[color]?.[type] || ''
 }
 
-// Intersection Observer for animations
 let observer = null
 
 const setupIntersectionObserver = () => {
@@ -745,7 +736,6 @@ const setupIntersectionObserver = () => {
             isInView[sectionId] = true
           }
 
-          // Add active class for generic animated elements
           entry.target.classList.add('active')
         }
       })
@@ -760,7 +750,6 @@ const setupIntersectionObserver = () => {
 onMounted(() => {
   setupIntersectionObserver()
 
-  // Observe sections
   const sections = [
     { selector: 'section:first-child', key: 'hero' },
     { selector: '#services', key: 'services' },
@@ -779,7 +768,6 @@ onMounted(() => {
     }
   })
 
-  // Observe all animated elements
   const animatedElements = document.querySelectorAll(
     '.animate-on-scroll, .animate-fade-in-up, .animate-fade-in-down, .animate-fade-in-left, .animate-fade-in-right, .animate-slide-up, .animate-slide-up-delay, .animate-slide-up-delay-2'
   )
