@@ -90,21 +90,43 @@
               </p>
             </div>
 
-            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-4">
-              <!-- Hidden fields for Netlify -->
-              <input type="hidden" name="form-name" value="contact" />
-              <div class="hidden">
-                <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            <!-- Message de confirmation -->
+            <div v-if="showSuccessMessage" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-green-800 font-medium">Message envoyé avec succès !</p>
               </div>
+              <p class="text-green-700 text-sm mt-2">Nous vous répondrons dans les plus brefs délais.</p>
+            </div>
 
+            <!-- Message d'erreur -->
+            <div v-if="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-red-800 font-medium">Erreur lors de l'envoi</p>
+              </div>
+              <p class="text-red-700 text-sm mt-2">{{ errorMessage }}</p>
+            </div>
+
+            <form @submit.prevent="handleSubmit" class="space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="group">
                   <label for="first-name"
                     class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                     Prénom *
                   </label>
-                  <input type="text" name="first-name" id="first-name" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white" />
+                  <input 
+                    type="text" 
+                    v-model="formData.first_name" 
+                    id="first-name" 
+                    required
+                    :disabled="submitting"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white disabled:bg-gray-100" 
+                  />
                 </div>
 
                 <div class="group">
@@ -112,8 +134,14 @@
                     class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                     Nom *
                   </label>
-                  <input type="text" name="last-name" id="last-name" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white" />
+                  <input 
+                    type="text" 
+                    v-model="formData.last_name" 
+                    id="last-name" 
+                    required
+                    :disabled="submitting"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white disabled:bg-gray-100" 
+                  />
                 </div>
               </div>
 
@@ -122,8 +150,14 @@
                   class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                   Email *
                 </label>
-                <input type="email" name="email" id="email" required
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white" />
+                <input 
+                  type="email" 
+                  v-model="formData.email" 
+                  id="email" 
+                  required
+                  :disabled="submitting"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white disabled:bg-gray-100" 
+                />
               </div>
 
               <div class="group">
@@ -131,8 +165,13 @@
                   class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                   Entreprise
                 </label>
-                <input type="text" name="company" id="company"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white" />
+                <input 
+                  type="text" 
+                  v-model="formData.company" 
+                  id="company"
+                  :disabled="submitting"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white disabled:bg-gray-100" 
+                />
               </div>
 
               <div class="group">
@@ -140,8 +179,12 @@
                   class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                   Sujet *
                 </label>
-                <select name="subject" id="subject" required
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white">
+                <select 
+                  v-model="formData.subject" 
+                  id="subject" 
+                  required
+                  :disabled="submitting"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white disabled:bg-gray-100">
                   <option value="">Sélectionnez un sujet</option>
                   <option value="administration">Assistance Administrative</option>
                   <option value="assistance-urgente">Organisation & Suivi d'Activité</option>
@@ -156,18 +199,31 @@
                   class="block text-sm font-medium text-gray-700 mb-2 group-focus-within:text-green-600 transition-colors">
                   Message *
                 </label>
-                <textarea name="message" id="message" rows="5" required
+                <textarea 
+                  v-model="formData.message" 
+                  id="message" 
+                  rows="5" 
+                  required
+                  :disabled="submitting"
                   placeholder="Décrivez-nous votre projet ou vos besoins..."
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white resize-none"></textarea>
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300 bg-gray-50 focus:bg-white resize-none disabled:bg-gray-100"></textarea>
               </div>
 
-              <button type="submit"
-                class="group w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-xl hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2">
-                <span>Envoyer le message</span>
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+              <button 
+                type="submit"
+                :disabled="submitting"
+                class="group w-full bg-gradient-to-r from-green-400 to-emerald-500 text-white px-8 py-4 rounded-xl hover:from-green-500 hover:to-emerald-600 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                <span v-if="!submitting">Envoyer le message</span>
+                <span v-else>Envoi en cours...</span>
+                
+                <svg v-if="!submitting" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+                
+                <svg v-else class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               </button>
             </form>
@@ -319,8 +375,26 @@
     </div>
   </section>
 </template>
+
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useContactStore } from '@/stores/contact'
+
+const contactStore = useContactStore()
+
+// État du formulaire
+const formData = ref({
+  first_name: '',
+  last_name: '',
+  email: '',
+  company: '',
+  subject: '',
+  message: ''
+})
+
+const submitting = ref(false)
+const showSuccessMessage = ref(false)
+const errorMessage = ref('')
 
 const contactMethods = [
   {
@@ -348,6 +422,52 @@ const contactMethods = [
     link: "#social",
   },
 ]
+
+// Gestion de la soumission du formulaire
+const handleSubmit = async () => {
+  // Reset des messages
+  showSuccessMessage.value = false
+  errorMessage.value = ''
+  
+  // Validation basique
+  if (!formData.value.first_name || !formData.value.last_name || !formData.value.email || !formData.value.subject || !formData.value.message) {
+    errorMessage.value = 'Veuillez remplir tous les champs obligatoires'
+    return
+  }
+
+  submitting.value = true
+
+  try {
+    const result = await contactStore.createContact(formData.value)
+    
+    if (result.success) {
+      showSuccessMessage.value = true
+      
+      // Reset du formulaire
+      formData.value = {
+        first_name: '',
+        last_name: '',
+        email: '',
+        company: '',
+        subject: '',
+        message: ''
+      }
+      
+      // Cacher le message en 5 sec
+      // setTimeout(() => {
+      //   showSuccessMessage.value = false
+      // }, 5000)
+      
+    } else {
+      errorMessage.value = result.error || 'Une erreur est survenue lors de l\'envoi du message'
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error)
+    errorMessage.value = 'Une erreur technique est survenue. Veuillez réessayer.'
+  } finally {
+    submitting.value = false
+  }
+}
 
 let observer = null
 
