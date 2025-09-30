@@ -5,3 +5,21 @@
    width: 100%;
    font-family: 'Poppins';
 }
+
+/* Déclaration de la police Intro Rust Intro Head R UC Base Shade */
+@font-face {
+  font-family: 'Intro rush base shade';
+  src: url('../assets/fonts/IntroRust-BaseShade.otf') format('opentype'),
+       url('../assets/fonts/fonnts.com-introrust-baseshade.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-logo-ondes {
+    font-family: 'Hammersmith One', sans-serif !important;
+}
+
+.font-logo-actives {
+    font-family: 'Intro rush base shade', sans-serif !important;
+}

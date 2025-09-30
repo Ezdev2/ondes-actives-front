@@ -4,11 +4,24 @@
       <div class="flex items-center justify-between">
         <!-- Logo and tagline -->
         <div class="">
-          <div class="flex items-center space-x-2 mb-2">
+          <!-- <div class="flex items-center space-x-2 mb-2">
             <router-link to="/" class="flex items-center space-x-2">
               <img :src="logo" alt="">
             </router-link>
-          </div>
+          </div> -->
+          <div class="flex items-center space-x-2 mb-2">
+          <router-link to="/" class="flex flex-col items-center leading-none">
+
+            <span class="text-[2.2rem] text-[#f69392] tracking-tight font-logo-ondes">
+              Ondes
+            </span>
+
+            <span class="text-lg text-[#18aa4e] tracking-wider -mt-1 transform scale-y-90 font-logo-actives">
+              ACTIVES
+            </span>
+
+          </router-link>
+        </div>
           <p class="text-gray-600 text-sm leading-relaxed max-w-xs">
             Solutions opérationnelles<br>
             pour petites structures
